@@ -84,33 +84,33 @@ namespace PreyectoDesarrollo_unicah.CLASES
                     {
                         if (reader.Read()) 
                         {
-                            nombre = reader["nombre1"].ToString();
-                            apellido = reader["apellido1"].ToString();
+                            nombre = reader["primer_nombre"].ToString();
+                            apellido = reader["primer_apellido"].ToString();
                             string rolUsuario = reader["rol"].ToString();
-                            string codigo = usuario.ToString();
-                            empleado = codigo;
+                            //string codigo = usuario.ToString();
+                            //empleado = codigo;
 
                             MessageBox.Show($"Bienvenido(a), {nombre} {apellido}. Su rol es: {rolUsuario}", "Inicio de Sesión", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                            if (rolUsuario == "administrador")
+                            if (rolUsuario == "Administrador")
                             {
                                 frmAdmin admin = new frmAdmin();
                                 admin.Show();
                                 Login.Hide();
                             }
-                            else if (rolUsuario == "supervisor")
+                            else if (rolUsuario == "Supervisor")
                             {
                                 frmSupervisor supervisor = new frmSupervisor();
                                 supervisor.Show();
                                 Login.Hide();
                             }
-                            else if (rolUsuario == "decano")
+                            else if (rolUsuario == "Decano")
                             {
                                 frmDecano decano = new frmDecano();
                                 decano.Show();
                                 Login.Hide();
                             }
-                            else if (rolUsuario == "docente")
+                            else if (rolUsuario == "Docente")
                             {
                                 frmDocente doc = new frmDocente();
                                 doc.Show();
@@ -296,7 +296,7 @@ namespace PreyectoDesarrollo_unicah.CLASES
                     cmd.Parameters.AddWithValue("@Clase", clase);
                     cmd.Parameters.AddWithValue("@Aula", Aula);
                     cmd.Parameters.AddWithValue("@Edificio", Edificio);
-                    cmd.Parameters.AddWithValue("@Seccion", Seccion);
+                    cmd.Parameters.AddWithValue("@Seccion", Seccion); // Agregar el parámetro
 
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
@@ -306,6 +306,9 @@ namespace PreyectoDesarrollo_unicah.CLASES
                 }
             }
         }
+
+
+
 
         public static void CrearPeriodo(DateTime inicio, DateTime fin)
         {

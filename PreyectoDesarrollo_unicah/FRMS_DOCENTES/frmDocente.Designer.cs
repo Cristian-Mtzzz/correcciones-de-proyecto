@@ -55,7 +55,7 @@ namespace PreyectoDesarrollo_unicah
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(126, 23);
             btnLogout.TabIndex = 17;
-            btnLogout.Text = "&CERRAR SESIÓN";
+            btnLogout.Text = "&CERRAR SESIï¿½N";
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
             // 
@@ -142,7 +142,7 @@ namespace PreyectoDesarrollo_unicah
             // 
             // clmSeccion
             // 
-            clmSeccion.HeaderText = "Sección";
+            clmSeccion.HeaderText = "Secciï¿½n";
             clmSeccion.MinimumWidth = 6;
             clmSeccion.Name = "clmSeccion";
             clmSeccion.ReadOnly = true;

@@ -64,7 +64,7 @@ namespace PreyectoDesarrollo_unicah
             btnAgregar.Name = "btnAgregar";
             btnAgregar.Size = new Size(126, 44);
             btnAgregar.TabIndex = 29;
-            btnAgregar.Text = "INSERT&AR JUSTIFICACIÓN";
+            btnAgregar.Text = "INSERT&AR JUSTIFICACIï¿½N";
             btnAgregar.UseVisualStyleBackColor = true;
             btnAgregar.Click += btnAgregar_Click;
             // 
@@ -141,7 +141,7 @@ namespace PreyectoDesarrollo_unicah
             label2.Name = "label2";
             label2.Size = new Size(123, 15);
             label2.TabIndex = 30;
-            label2.Text = "Justificación detallada";
+            label2.Text = "Justificaciï¿½n detallada";
             // 
             // dgvJustificacion
             // 
@@ -173,7 +173,7 @@ namespace PreyectoDesarrollo_unicah
             // 
             // clmSeccion
             // 
-            clmSeccion.HeaderText = "Sección";
+            clmSeccion.HeaderText = "Secciï¿½n";
             clmSeccion.MinimumWidth = 6;
             clmSeccion.Name = "clmSeccion";
             clmSeccion.ReadOnly = true;
@@ -189,7 +189,7 @@ namespace PreyectoDesarrollo_unicah
             // 
             // clmJustifica
             // 
-            clmJustifica.HeaderText = "Justificación";
+            clmJustifica.HeaderText = "Justificaciï¿½n";
             clmJustifica.MinimumWidth = 6;
             clmJustifica.Name = "clmJustifica";
             clmJustifica.ReadOnly = true;
@@ -202,7 +202,7 @@ namespace PreyectoDesarrollo_unicah
             label1.Name = "label1";
             label1.Size = new Size(173, 15);
             label1.TabIndex = 25;
-            label1.Text = "JUSTIFICACIÓN DE ASISTENCIA";
+            label1.Text = "JUSTIFICACIï¿½N DE ASISTENCIA";
             // 
             // txtJustifica
             // 
@@ -223,7 +223,7 @@ namespace PreyectoDesarrollo_unicah
             lblCaracteres.Name = "lblCaracteres";
             lblCaracteres.Size = new Size(114, 17);
             lblCaracteres.TabIndex = 38;
-            lblCaracteres.Text = "Límite de caracteres";
+            lblCaracteres.Text = "Lï¿½mite de caracteres";
             // 
             // label3
             // 
@@ -282,7 +282,7 @@ namespace PreyectoDesarrollo_unicah
             FormBorderStyle = FormBorderStyle.None;
             Name = "frmJustificacion";
             Text = "FrmReporte";
-            Load += frmJustificación_Load;
+            Load += frmJustificaciÃ³n_Load;
             MouseDown += MoveForm_MouseDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

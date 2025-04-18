@@ -57,7 +57,7 @@ namespace PreyectoDesarrollo_unicah
             btnDay.Name = "btnDay";
             btnDay.Size = new Size(211, 23);
             btnDay.TabIndex = 21;
-            btnDay.Text = "INSERT&AR DÍA DE REPOSICIÓN";
+            btnDay.Text = "INSERT&AR Dï¿½A DE REPOSICIï¿½N";
             btnDay.UseVisualStyleBackColor = true;
             btnDay.Click += btnDay_Click;
             // 
@@ -134,7 +134,7 @@ namespace PreyectoDesarrollo_unicah
             label1.Name = "label1";
             label1.Size = new Size(142, 15);
             label1.TabIndex = 18;
-            label1.Text = "REPORTE DE REPOSICIÓN";
+            label1.Text = "REPORTE DE REPOSICIï¿½N";
             // 
             // dgvRepone
             // 
@@ -210,7 +210,8 @@ namespace PreyectoDesarrollo_unicah
             FormBorderStyle = FormBorderStyle.None;
             Name = "frmReposicion";
             Text = "FrmReporte";
-            Load += frmReposición_Load;
+            Load += new EventHandler(frmReposiciÃ³n_Load);
+
             MouseDown += MoveForm_MouseDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

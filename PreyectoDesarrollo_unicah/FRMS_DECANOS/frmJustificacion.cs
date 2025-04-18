@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices; //Relacionado con Dll (Librería)
+using System.Runtime.InteropServices; //Relacionado con Dll (Librerï¿½a)
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,13 +26,13 @@ namespace PreyectoDesarrollo_unicah
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hwnd, int wmsg, int wparam, int lparam);
 
-        private void frmJustificación_Load(object sender, EventArgs e)
+        private void frmJustificaciÃ³n_Load(object sender, EventArgs e)
         {
             lblPersona.Text = ACCIONES_BD.Persona();
 
             //Ajuste de controles
-            txtJustifica.Text = Environment.NewLine; // (TextChanged) Mantener la primera línea vacía cuando se opera esto
-            txtJustifica.SelectionStart = txtJustifica.Text.Length; // (TextChanged) Colocar el cursor en la segunda línea cuando se opera esto
+            txtJustifica.Text = Environment.NewLine; // (TextChanged) Mantener la primera lï¿½nea vacï¿½a cuando se opera esto
+            txtJustifica.SelectionStart = txtJustifica.Text.Length; // (TextChanged) Colocar el cursor en la segunda lï¿½nea cuando se opera esto
 
             //Ajuste en la BDD
             ACCIONES_BD.tablaJustifica(dgvJustificacion, ACCIONES_BD.empleado);
@@ -64,11 +64,11 @@ namespace PreyectoDesarrollo_unicah
             if (!string.IsNullOrEmpty(txtJustifica.Text.Trim()))
             {
                 ACCIONES_BD.Justifico(dgvJustificacion, (int)dgvJustificacion.CurrentRow.Cells[0].Value, txtJustifica.Text);
-                ACCIONES_BD.tablaJustifica(dgvJustificacion, ACCIONES_BD.empleado); //Esto ayuda a actualizar la tabla, la línea anterior actualiza datos
+                ACCIONES_BD.tablaJustifica(dgvJustificacion, ACCIONES_BD.empleado); //Esto ayuda a actualizar la tabla, la lï¿½nea anterior actualiza datos
             }
         }
 
-        //Métodos para el textbox de justificación
+        //Mï¿½todos para el textbox de justificaciï¿½n
 
         private bool bloqueado = false; // Evita que los eventos se disparen mutuamente
         private void Renglon2()
@@ -78,42 +78,42 @@ namespace PreyectoDesarrollo_unicah
 
             string[] lineas = txtJustifica.Lines;
 
-            // Asegurar que la primera línea esté vacía
+            // Asegurar que la primera lï¿½nea estï¿½ vacï¿½a
             if (lineas.Length > 0)
             {
-                lineas[0] = ""; // Vaciar la primera línea
+                lineas[0] = ""; // Vaciar la primera lï¿½nea
             }
 
-            // Si hay más de dos líneas, eliminar las adicionales
+            // Si hay mï¿½s de dos lï¿½neas, eliminar las adicionales
             if (lineas.Length > 2)
             {
                 txtJustifica.Lines = lineas.Take(2).ToArray(); //Despeja el dos del arreglo
             }
             else
             {
-                txtJustifica.Lines = lineas; // Asignar líneas modificadas
+                txtJustifica.Lines = lineas; // Asignar lï¿½neas modificadas
             }
 
-            // Si el usuario borra todo, mantener la primera línea vacía y el cursor en la segunda línea
+            // Si el usuario borra todo, mantener la primera lï¿½nea vacï¿½a y el cursor en la segunda lï¿½nea
             if (txtJustifica.Text.Trim() == "")
             {
                 txtJustifica.Text = Environment.NewLine;
             }
 
-            txtJustifica.SelectionStart = txtJustifica.Text.Length; // Mantener el cursor en la segunda línea
+            txtJustifica.SelectionStart = txtJustifica.Text.Length; // Mantener el cursor en la segunda lï¿½nea
 
-            bloqueado = false; //Desactiva método contador de caracteres
+            bloqueado = false; //Desactiva mï¿½todo contador de caracteres
 
-            ContarChars(); //Aquí se ubica por orden
+            ContarChars(); //Aquï¿½ se ubica por orden
         }
 
         private void ContarChars()
         {
-            int Max = 150; // Límite máximo de caracteres
+            int Max = 150; // Lï¿½mite mï¿½ximo de caracteres
             if (bloqueado) return;
             bloqueado = true;
 
-            // "?" es un if para true y ":" es un else, donde esa resta al contener un valor que "suma caracteres" a dos, pues resta a dos para valor original, en renglón 2
+            // "?" es un if para true y ":" es un else, donde esa resta al contener un valor que "suma caracteres" a dos, pues resta a dos para valor original, en renglï¿½n 2
             int conteoRenglon2 = txtJustifica.Text.Trim() == "" ? 0 : txtJustifica.Text.Length - Environment.NewLine.Length;
 
             if (txtJustifica.Text.Length > Max + 1)

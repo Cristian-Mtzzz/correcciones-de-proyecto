@@ -16,16 +16,16 @@ namespace PreyectoDesarrollo_unicah.CLASES
                 MessageBox.Show("Datos no ingresados, ingrese sus datos", "Error Ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
-            if (!SoloNumero(usuario) && usuario.Length <= 4)
+            /*
+            if (!SoloNumero(usuario) && usuario.Length <= 8)
             {
                 MessageBox.Show("El usuario corresponde a números", "Error Letras", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
-            }
+            }*/
 
-            if (usuario != "Usuario:" && usuario.Length > 4)
+            if (usuario != "Usuario:" && usuario.Length > 8)
             {
-                MessageBox.Show("Su usuario debe contener cuatro o menos caracteres.", "Usuario Largo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Su usuario debe contener ocho o menos caracteres.", "Usuario Largo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
 
@@ -42,7 +42,7 @@ namespace PreyectoDesarrollo_unicah.CLASES
         {
             return usuario.All(char.IsDigit); 
         }
-
+        
         public static bool Contraseña(object sender, EventArgs e, string usuario, string contraseña, Form Login)
         {
             if (!ACCIONES_BD.AdminCasoContra(usuario, contraseña, Login))

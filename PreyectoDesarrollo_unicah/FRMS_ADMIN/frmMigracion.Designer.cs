@@ -169,7 +169,7 @@ namespace PreyectoDesarrollo_unicah
             // 
             // clmSeccion
             // 
-            clmSeccion.HeaderText = "Sección";
+            clmSeccion.HeaderText = "Secciï¿½n";
             clmSeccion.Name = "clmSeccion";
             clmSeccion.ReadOnly = true;
             clmSeccion.Width = 58;
@@ -195,7 +195,7 @@ namespace PreyectoDesarrollo_unicah
             label1.Name = "label1";
             label1.Size = new Size(129, 15);
             label1.TabIndex = 12;
-            label1.Text = "MIGRACIÓN DE DATOS";
+            label1.Text = "MIGRACIï¿½N DE DATOS";
             // 
             // lblParcial
             // 
@@ -306,7 +306,7 @@ namespace PreyectoDesarrollo_unicah
             FormBorderStyle = FormBorderStyle.None;
             Name = "frmMigracion";
             Text = "FrmReporte";
-            Load += frmMigración_Load;
+            Load += frmMigraciÃ³n_Load;
             MouseDown += MoveForm_MouseDown;
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();

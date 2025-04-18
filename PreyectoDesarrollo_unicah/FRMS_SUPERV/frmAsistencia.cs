@@ -88,6 +88,7 @@ namespace PreyectoDesarrollo_unicah
         private void Filtros(object sender, EventArgs e)
         {
             ACCIONES_BD.FiltrarDatosSuperv(txtDoc.Text, txtClase.Text, cmbAula.Text, cmbEdificio.Text, cmbSeccion.Text, dgvAsiste);
+
         }
 
         private void dgvAsiste_CellValueChanged(object sender, DataGridViewCellEventArgs e)

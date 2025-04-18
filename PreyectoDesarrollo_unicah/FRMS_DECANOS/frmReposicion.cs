@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices; //Relacionado con Dll (Librería)
+using System.Runtime.InteropServices; //Relacionado con Dll (Librerï¿½a)
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -26,7 +26,7 @@ namespace PreyectoDesarrollo_unicah
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hwnd, int wmsg, int wparam, int lparam);
 
-        private void frmReposición_Load(object sender, EventArgs e)
+        private void frmReposiciÃ³n_Load(object sender, EventArgs e)
         {
             lblPersona.Text = ACCIONES_BD.Persona();
             dtpReposicion.MinDate = DateTime.Today;            

@@ -73,11 +73,11 @@ namespace PreyectoDesarrollo_unicah
             string usuario = txtusuario.Text;
             string contraseña = txtcontraseña.Text.Trim();
 
-            if (!Validaciones.Usuario(sender, e, usuario, contraseña))
+           /* if (!Validaciones.Usuario(sender, e, usuario, contraseña))
                 return;
 
             if (!Validaciones.Contraseña(sender, e, usuario, contraseña, this))
-                return;
+                return;*/
 
             ACCIONES_BD Login = new ACCIONES_BD();
             Login.Login(usuario, contraseña, this);
@@ -99,6 +99,11 @@ namespace PreyectoDesarrollo_unicah
         {
             if (!char.IsLetterOrDigit(e.KeyChar) && e.KeyChar != ' ' && e.KeyChar != (char)Keys.Back)
                 e.Handled = true;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

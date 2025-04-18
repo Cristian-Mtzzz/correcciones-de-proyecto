@@ -29,7 +29,7 @@ namespace PreyectoDesarrollo_unicah
 
         private extern static void SendMessage(System.IntPtr hwnd, int wmsg, int wparam, int lparam);
 
-        private void frmMigración_Load(object sender, EventArgs e)
+        private void frmMigraciÃ³n_Load(object sender, EventArgs e)
         {
             lblPersona.Text = ACCIONES_BD.Persona();
 
@@ -49,8 +49,8 @@ namespace PreyectoDesarrollo_unicah
             mesAdmin.MaxDate = fin;
 
             if (inicio.Date == DateTime.Now.Date)
-                if (MessageBox.Show("¿Seguro que quiere definir el inicio hoy?" +
-                "\nNo podrá definir de nuevo si no es el que desea", "Iniciar Periodo",
+                if (MessageBox.Show("ï¿½Seguro que quiere definir el inicio hoy?" +
+                "\nNo podrï¿½ definir de nuevo si no es el que desea", "Iniciar Periodo",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
                 {
                     ACCIONES_BD.CrearPeriodo(inicio, fin);
@@ -104,7 +104,7 @@ namespace PreyectoDesarrollo_unicah
             {
                 for (int semana = 1; semana <= 4; semana++)
                 {
-                    string[] diasSemana = { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado" };
+                    string[] diasSemana = { "Lunes", "Martes", "Miï¿½rcoles", "Jueves", "Viernes", "Sï¿½bado" };
                     foreach (string dia in diasSemana)
                     {
                         dt.Columns.Add($"Parcial {parcial} - Semana {semana} - {dia}");
@@ -218,7 +218,7 @@ namespace PreyectoDesarrollo_unicah
                     }
                     catch (IOException) //En caso que no se guarde por cualquier error
                     {
-                        MessageBox.Show("El archivo está abierto en Excel.\nPor favor, cerrar antes de guardar.", "Archivo en uso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("El archivo estï¿½ abierto en Excel.\nPor favor, cerrar antes de guardar.", "Archivo en uso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
             }
         }
@@ -244,7 +244,7 @@ namespace PreyectoDesarrollo_unicah
 
         private void btnSQL_Click(object sender, EventArgs e)
         {
-            string rutaExcel = ""; //Por defecto asignado, o vacío para después luego asignarse
+            string rutaExcel = ""; //Por defecto asignado, o vacï¿½o para despuï¿½s luego asignarse
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Filter = "Archivos Excel (*.xlsx)|*.xlsx";
@@ -266,7 +266,7 @@ namespace PreyectoDesarrollo_unicah
 
             if (string.IsNullOrEmpty(rutaExcel))
             {
-                MessageBox.Show("No se seleccionó algún archivo.");
+                MessageBox.Show("No se seleccionï¿½ algï¿½n archivo.");
                 return;
             }
 
@@ -288,7 +288,7 @@ namespace PreyectoDesarrollo_unicah
                     {
                         if (encabezado)
                         {
-                            // Agregar columnas según la primera fila (encabezado)
+                            // Agregar columnas segï¿½n la primera fila (encabezado)
                             foreach (var celda in fila.Cells())
                             {
                                 dt.Columns.Add(celda.Value.ToString());
@@ -314,7 +314,7 @@ namespace PreyectoDesarrollo_unicah
                         conexion.Open();
                         using (SqlBulkCopy bulkCopy = new SqlBulkCopy(conexion))
                         {
-                            // Ahora, según el índice de la hoja, determinamos el nombre de la tabla SQL destino.
+                            // Ahora, segï¿½n el ï¿½ndice de la hoja, determinamos el nombre de la tabla SQL destino.
                             string tablaDestino = "";
                             switch (h)
                             {
@@ -346,7 +346,7 @@ namespace PreyectoDesarrollo_unicah
                                     bulkCopy.ColumnMappings.Add("Nombre4", "Apellido1");
                                     break;
                                 default:
-                                    // Si por alguna razón llega a otro valor, sal del bucle o configura un valor por defecto.
+                                    // Si por alguna razï¿½n llega a otro valor, sal del bucle o configura un valor por defecto.
                                     continue;
                             }
 
@@ -356,7 +356,7 @@ namespace PreyectoDesarrollo_unicah
                     }
                 }
             }
-            MessageBox.Show("Importación completada exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Importaciï¿½n completada exitosamente.", "ï¿½xito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
