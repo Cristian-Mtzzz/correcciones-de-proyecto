@@ -64,7 +64,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
         private void btnMigra_Click(object sender, EventArgs e)
         {
             this.Close();
-            frmMigracion Migra = new frmMigracion();
+            FrmMigrar Migra = new FrmMigrar();
             Migra.Show();
         }
 

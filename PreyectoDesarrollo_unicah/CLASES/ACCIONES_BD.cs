@@ -87,8 +87,8 @@ namespace PreyectoDesarrollo_unicah.CLASES
                             nombre = reader["primer_nombre"].ToString();
                             apellido = reader["primer_apellido"].ToString();
                             string rolUsuario = reader["rol"].ToString();
-                            //string codigo = usuario.ToString();
-                            //empleado = codigo;
+                            string codigo = usuario.ToString();
+                            empleado = codigo;
 
                             MessageBox.Show($"Bienvenido(a), {nombre} {apellido}. Su rol es: {rolUsuario}", "Inicio de Sesión", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -496,31 +496,40 @@ namespace PreyectoDesarrollo_unicah.CLASES
                 }
             }
         }
-
         public static DataTable tablaJustifica(DataGridView dgv, string decanoCodigo)
         {
+            if (string.IsNullOrWhiteSpace(decanoCodigo))
+            {
+                throw new ArgumentException("El parámetro decanoCodigo no puede ser nulo o vacío.");
+            }
+
+            // Validar que decanoCodigo sea un valor numérico válido
+            if (!int.TryParse(decanoCodigo, out int codigoDecano))
+            {
+                //throw new ArgumentException("El parámetro decanoCodigo debe ser un número válido.");
+            }
+
             DataTable dt = new DataTable();
             using (SqlConnection conn = new SqlConnection(CONEXION_BD.conectar.ConnectionString))
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("PA_Justifica", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@CodigoDecano", decanoCodigo);
+                cmd.Parameters.AddWithValue("@CodigoDecano", codigoDecano); // Aquí se pasa el valor convertido
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
             }
+
             if (dt.Rows.Count > 0)
             {
                 dgv.Columns.Clear();
-
                 BindingSource bs = new BindingSource();
                 bs.DataSource = dt;
                 dgv.DataSource = bs;
                 bs.ResetBindings(false);
                 dgv.AutoGenerateColumns = true;
                 dgv.Refresh();
-
                 dgv.Columns[0].Visible = false;
                 dgv.Columns[1].Width = 150;
                 dgv.Columns[2].Width = 80;
@@ -533,6 +542,9 @@ namespace PreyectoDesarrollo_unicah.CLASES
 
             return dt;
         }
+
+
+
 
         public static void Justifico(DataGridView dgv, int Ausencia, string Justificacion)
         {
@@ -572,20 +584,34 @@ namespace PreyectoDesarrollo_unicah.CLASES
                 dgv.Columns[0].Visible = false;
             }
         }
-
-        public static DataTable tablaRepone(DataGridView dgv, string decanoCodigo)         
+        public static DataTable tablaRepone(DataGridView dgv, string decanoCodigo)
         {
+            // Validar que el parámetro decanoCodigo no sea nulo o vacío
+            if (string.IsNullOrWhiteSpace(decanoCodigo))
+            {
+                throw new ArgumentException("El parámetro decanoCodigo no puede ser nulo o vacío.");
+            }
+
+            // Intentar convertir decanoCodigo a un entero
+            if (!int.TryParse(decanoCodigo, out int codigoDecano))
+            {
+                
+            }
+
             DataTable dt = new DataTable();
             using (SqlConnection conn = new SqlConnection(CONEXION_BD.conectar.ConnectionString))
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand("PA_Repone", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@CodigoDecano", decanoCodigo);
+
+                // Usar el valor convertido
+                cmd.Parameters.AddWithValue("@CodigoDecano", codigoDecano);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
             }
+
             if (dt.Rows.Count > 0)
             {
                 dgv.Columns.Clear();
@@ -595,7 +621,7 @@ namespace PreyectoDesarrollo_unicah.CLASES
                 dgv.DataSource = bs;
                 bs.ResetBindings(false);
                 dgv.AutoGenerateColumns = true;
-                dgv.Refresh(); 
+                dgv.Refresh();
                 dgv.Columns[0].Visible = false;
             }
             dgv.Columns[1].Width = 150;
@@ -607,6 +633,7 @@ namespace PreyectoDesarrollo_unicah.CLASES
             dgv.Columns[5].HeaderText = "Fecha de Reposición";
             return dt;
         }
+
 
         public static void Repongo(DataGridView dgv, int Ausencia, DateTimePicker dtp)
         {
@@ -650,6 +677,18 @@ namespace PreyectoDesarrollo_unicah.CLASES
 
         public static DataTable tabla_docente(DataGridView dgv, string docenteCodigo)
         {
+            // Validar que docenteCodigo no sea nulo o vacío
+            if (string.IsNullOrWhiteSpace(docenteCodigo))
+            {
+                throw new ArgumentException("El parámetro docenteCodigo no puede ser nulo o vacío.");
+            }
+
+            // Intentar convertir docenteCodigo a un entero
+            if (!int.TryParse(docenteCodigo, out int codigoDocente))
+            {
+                
+            }
+
             DataTable dt = new DataTable();
             using (SqlConnection con = new SqlConnection(CONEXION_BD.conectar.ConnectionString))
             {
@@ -658,9 +697,11 @@ namespace PreyectoDesarrollo_unicah.CLASES
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddWithValue("@CodigoDocente", docenteCodigo);
+                    // Agregar el parámetro @CodigoDocente
+                    cmd.Parameters.AddWithValue("@CodigoDocente", codigoDocente);
 
-                    SqlDataAdapter da = new SqlDataAdapter(cmd); da.Fill(dt);
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    da.Fill(dt);
                 }
             }
 
@@ -674,7 +715,7 @@ namespace PreyectoDesarrollo_unicah.CLASES
                 bs.ResetBindings(false);
 
                 dgv.AutoGenerateColumns = true;
-                dgv.Refresh(); 
+                dgv.Refresh();
                 dgv.Columns[0].Width = 150;
                 dgv.Columns[1].Width = 58;
                 dgv.Columns[1].HeaderText = "Sección";
@@ -683,6 +724,8 @@ namespace PreyectoDesarrollo_unicah.CLASES
             }
             return dt;
         }
+
+
 
         public static DataTable CargarAsistenciaDoc(MonthCalendar docFechas, string clase, string seccion, string aula, string edificio)
         {

@@ -35,22 +35,50 @@ namespace PreyectoDesarrollo_unicah
         }
 
 
-        private void frmDocente_Load(object sender, EventArgs e) //M�todo del formulario
+        private void frmDocente_Load(object sender, EventArgs e) //Método del formulario
         {
-            //Ajuste de forulario
+            // Ajuste de formulario
             lblPersona.Text = ACCIONES_BD.Persona();
 
-            //Ajustes de BDD
+            // Validar que ACCIONES_BD.empleado sea válido
+            if (string.IsNullOrWhiteSpace(ACCIONES_BD.empleado) || !int.TryParse(ACCIONES_BD.empleado, out _))
+            {
+                MessageBox.Show("El código del empleado no es válido. Por favor, verifique.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Ajustes de BDD
             ACCIONES_BD.Periodo(mesDoc);
             dgvDoc.AutoGenerateColumns = true;
+
+            // Llamar a tabla_docente y verificar si hay filas cargadas
             ACCIONES_BD.tabla_docente(dgvDoc, ACCIONES_BD.empleado);
-            ACCIONES_BD.CargarAsistenciaDoc(
-                mesDoc,
-                (string)dgvDoc.CurrentRow.Cells[0].Value,
-                (string)dgvDoc.CurrentRow.Cells[1].Value,
-                (string)dgvDoc.CurrentRow.Cells[2].Value,
-                (string)dgvDoc.CurrentRow.Cells[3].Value);
+            if (dgvDoc.Rows.Count == 0)
+            {
+                MessageBox.Show("No se encontraron datos para el docente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Validar que las celdas de la fila actual no sean nulas antes de acceder a ellas
+            if (dgvDoc.CurrentRow != null &&
+                dgvDoc.CurrentRow.Cells[0].Value != null &&
+                dgvDoc.CurrentRow.Cells[1].Value != null &&
+                dgvDoc.CurrentRow.Cells[2].Value != null &&
+                dgvDoc.CurrentRow.Cells[3].Value != null)
+            {
+                ACCIONES_BD.CargarAsistenciaDoc(
+                    mesDoc,
+                    dgvDoc.CurrentRow.Cells[0].Value.ToString(),
+                    dgvDoc.CurrentRow.Cells[1].Value.ToString(),
+                    dgvDoc.CurrentRow.Cells[2].Value.ToString(),
+                    dgvDoc.CurrentRow.Cells[3].Value.ToString());
+            }
+            else
+            {
+                MessageBox.Show("No se pudo cargar la asistencia porque faltan datos en la fila seleccionada.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
+
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
