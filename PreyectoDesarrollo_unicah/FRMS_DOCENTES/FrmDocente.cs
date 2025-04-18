@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.InteropServices; //Relacionado con Dll (Librería)
+using System.Runtime.InteropServices; //Relacionado con Dll (Librerï¿½a)
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,7 +35,7 @@ namespace PreyectoDesarrollo_unicah
         }
 
 
-        private void frmDocente_Load(object sender, EventArgs e) //Método del formulario
+        private void frmDocente_Load(object sender, EventArgs e) //Mï¿½todo del formulario
         {
             //Ajuste de forulario
             lblPersona.Text = ACCIONES_BD.Persona();
@@ -100,7 +100,7 @@ namespace PreyectoDesarrollo_unicah
                 // Limpiar las fechas resaltadas previas en el MonthCalendar.
                 mesDoc.RemoveAllBoldedDates();
 
-                // Llama al método para cargar las fechas marcadas para ese registro.
+                // Llama al mï¿½todo para cargar las fechas marcadas para ese registro.
                 ACCIONES_BD.CargarAsistenciaDoc(mesDoc, Clase, seccion, aula, edificio);
             }
         }
@@ -111,25 +111,25 @@ namespace PreyectoDesarrollo_unicah
             // Definir la fecha de inicio del primer parcial
             DateTime fechaInicio = new DateTime(DateTime.Now.Year, 1, 20); // 20 de enero
 
-            // Calcular la diferencia en días
-            int offsetDias = (fechaSeleccionada - fechaInicio).Days; // Puede ser negativo si está antes del 20/ene
+            // Calcular la diferencia en dï¿½as
+            int offsetDias = (fechaSeleccionada - fechaInicio).Days; // Puede ser negativo si estï¿½ antes del 20/ene
 
-            // Cada semana son 7 días
+            // Cada semana son 7 dï¿½as
             // Tenemos 12 semanas en total (3 parciales * 4 semanas)
             // Rango total: 0 <= offsetDias < 12 * 7 = 84
 
             if (offsetDias < 0 || offsetDias >= 12 * 7)
             {
-                // Fuera de rango (antes del 20/ene o después de 12 semanas)
+                // Fuera de rango (antes del 20/ene o despuï¿½s de 12 semanas)
                 lblParcial.Text = "Fuera de rango";
                 lblWeek.Text = "";
                 return;
             }
 
-            // Calcular el índice de la semana (0 a 11)
+            // Calcular el ï¿½ndice de la semana (0 a 11)
             int indiceSemana = offsetDias / 7; // entero
 
-            // Calcular el índice de parcial (0 a 2)
+            // Calcular el ï¿½ndice de parcial (0 a 2)
             // 4 semanas por parcial => parcial = floor(indiceSemana / 4)
             int indiceParcial = indiceSemana / 4; // 0 = parcial 1, 1 = parcial 2, 2 = parcial 3
 
