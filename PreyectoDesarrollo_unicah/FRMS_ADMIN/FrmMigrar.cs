@@ -27,7 +27,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
 
 
-        private bool CodigoFacultadExiste(string codigoFacultad)
+        /*private bool CodigoFacultadExiste(string codigoFacultad)
         {
             using (SqlConnection conexion = new SqlConnection(CONEXION_BD.conexion))
             {
@@ -41,14 +41,14 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                 }
             }
         }
-
-        private void InsertarEmpleado(string codigoEmpleado, string primerNombre, string segundoNombre, string primerApellido, string segundoApellido, string codigoFacultad)
+        */
+        private void InsertarEmpleado(string codigoEmpleado, string primerNombre, string segundoNombre, string primerApellido, string segundoApellido)
         {
             using (SqlConnection conexion = new SqlConnection(CONEXION_BD.conexion))
             {
                 conexion.Open();
                 string query = "INSERT INTO empleados (codigo_empleado, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, facultad, rol, usuario, contraseña) " +
-                               "VALUES (@CodigoEmpleado, @PrimerNombre, @SegundoNombre, @PrimerApellido, @SegundoApellido, @CodigoFacultad, 'Empleado', @Usuario, @Contraseña)";
+                               "VALUES (@CodigoEmpleado, @PrimerNombre, @SegundoNombre, @PrimerApellido, @SegundoApellido, 'Empleado', @Usuario, @Contraseña)";
                 using (SqlCommand cmd = new SqlCommand(query, conexion))
                 {
                     cmd.Parameters.AddWithValue("@CodigoEmpleado", codigoEmpleado); // Código de empleado
@@ -56,7 +56,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                     cmd.Parameters.AddWithValue("@SegundoNombre", segundoNombre);
                     cmd.Parameters.AddWithValue("@PrimerApellido", primerApellido);
                     cmd.Parameters.AddWithValue("@SegundoApellido", segundoApellido);
-                    cmd.Parameters.AddWithValue("@CodigoFacultad", codigoFacultad); // Código de Facultad
+                    //cmd.Parameters.AddWithValue("@CodigoFacultad", codigoFacultad); // Código de Facultad
                     cmd.Parameters.AddWithValue("@Usuario", $"{primerNombre.ToLower()}.{primerApellido.ToLower()}"); // Generar usuario
                     cmd.Parameters.AddWithValue("@Contraseña", "123456"); // Contraseña predeterminada
                     cmd.ExecuteNonQuery();
@@ -97,31 +97,32 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                 if (row.IsNewRow) continue;
 
                 // Extraer datos de las columnas
-                string codigoEmpleado = row.Cells[4].Value?.ToString(); // Código de empleado
-                string primerNombre = row.Cells[0].Value?.ToString();
-                string segundoNombre = row.Cells[1].Value?.ToString();
-                string primerApellido = row.Cells[2].Value?.ToString();
-                string segundoApellido = row.Cells[3].Value?.ToString();
-                string codigoFacultad = row.Cells[5].Value?.ToString(); // Código de Facultad
-                string codigoAsignatura = row.Cells[6].Value?.ToString(); // Código de Clase
-                string asignatura = row.Cells[7].Value?.ToString(); // Asignatura
-                string seccion = row.Cells[8].Value?.ToString(); // Sección
-                string aula = row.Cells[9].Value?.ToString(); // Aula
-                string edificio = row.Cells[10].Value?.ToString(); // Edificio
-                string fechaInicio = row.Cells[11].Value?.ToString(); // Fecha inicio
-                string fechaFinal = row.Cells[12].Value?.ToString(); // Fecha final
+                string codigoEmpleado = row.Cells[0].Value?.ToString(); // Código de empleado
+                string primerNombre = row.Cells[1].Value?.ToString();
+                string segundoNombre = row.Cells[2].Value?.ToString();
+                string primerApellido = row.Cells[3].Value?.ToString();
+                string segundoApellido = row.Cells[4].Value?.ToString();
+                string facultad = row.Cells[5].Value?.ToString(); 
+                string codigoFacultad = row.Cells[6].Value?.ToString(); // Código de Facultad
+                string codigoAsignatura = row.Cells[7].Value?.ToString(); // Código de Clase
+                string asignatura = row.Cells[8].Value?.ToString(); // Asignatura
+                string seccion = row.Cells[9].Value?.ToString(); // Sección
+                string aula = row.Cells[10].Value?.ToString(); // Aula
+                string edificio = row.Cells[11].Value?.ToString(); // Edificio
+                string fechaInicio = row.Cells[12].Value?.ToString(); // Fecha inicio
+                string fechaFinal = row.Cells[11].Value?.ToString(); // Fecha final
 
                 try
                 {
                     // Validar si el código de facultad existe
-                    if (!CodigoFacultadExiste(codigoFacultad))
-                    {
-                        MessageBox.Show($"El código de facultad '{codigoFacultad}' no existe en la base de datos. Registro omitido.", "Error de clave foránea", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        continue;
-                    }
+                    /* if (!CodigoFacultadExiste(codigoFacultad))
+                     {
+                         MessageBox.Show($"El código de facultad '{codigoFacultad}' no existe en la base de datos. Registro omitido.", "Error de clave foránea", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                         continue;
+                     }*/
 
                     // Guardar en la tabla empleados
-                    InsertarEmpleado(codigoEmpleado, primerNombre, segundoNombre, primerApellido, segundoApellido, codigoFacultad);
+                    InsertarEmpleado(codigoEmpleado, primerNombre, segundoNombre, primerApellido, segundoApellido);
 
                     // Guardar en la tabla Clases
                     InsertarClase(codigoAsignatura, codigoFacultad, asignatura, seccion, aula, edificio, fechaInicio, fechaFinal);

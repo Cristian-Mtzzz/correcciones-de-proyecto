@@ -16,9 +16,9 @@ namespace PreyectoDesarrollo_unicah.CLASES
 
     internal class CONEXION_BD
     {
-        //public static string conexion = "Server=tcp:mssql-193001-0.cloudclusters.net,10058;Initial Catalog=Supervision_Unicah;User ID=BD;Password=Changeme00!+;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
+        public static string conexion = "Server=tcp:mssql-193001-0.cloudclusters.net,10058;Initial Catalog=reposuper;User ID=CristianM;Password=Changeme00!+;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;";
         
-        public static string conexion ="Server=2AM89P39-PC\\SQLEXPRESS;Database=reposuper;Trusted_Connection=True;";
+        //public static string conexion ="Server=2AM89P39-PC\\SQLEXPRESS;Database=reposuper;Trusted_Connection=True;";
 
         public static SqlConnection conectar = new SqlConnection(conexion);
 
