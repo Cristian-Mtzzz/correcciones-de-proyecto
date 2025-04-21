@@ -35,6 +35,7 @@
             pictureBox1 = new PictureBox();
             btncargar = new Button();
             dgvMigrar = new DataGridView();
+            btnGuardar = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -115,11 +116,22 @@
             dgvMigrar.Size = new Size(1320, 646);
             dgvMigrar.TabIndex = 8;
             // 
+            // btnGuardar
+            // 
+            btnGuardar.Location = new Point(1122, 751);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(99, 35);
+            btnGuardar.TabIndex = 9;
+            btnGuardar.Text = "Guardar datos";
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += btnGuardar_Click;
+            // 
             // FrmMigrar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1359, 798);
+            Controls.Add(btnGuardar);
             Controls.Add(dgvMigrar);
             Controls.Add(btncargar);
             Controls.Add(panel1);
@@ -144,5 +156,6 @@
         private PictureBox pictureBox1;
         private Button btncargar;
         private DataGridView dgvMigrar;
+        private Button btnGuardar;
     }
 }
