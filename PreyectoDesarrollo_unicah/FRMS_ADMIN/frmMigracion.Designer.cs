@@ -83,6 +83,16 @@ namespace PreyectoDesarrollo_unicah
             btnExcel.UseVisualStyleBackColor = true;
             btnExcel.Click += btnExcel_Click;
             // 
+            // btnSQL
+            // 
+            btnSQL.Location = new Point(774, 446);
+            btnSQL.Name = "btnSQL";
+            btnSQL.Size = new Size(133, 22);
+            btnSQL.TabIndex = 26;
+            btnSQL.Text = "&MIGRAR EXCEL A SQL";
+            btnSQL.UseVisualStyleBackColor = true;
+            btnSQL.Click += btnSQL_Click;
+            // 
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.minimizar_signo;
@@ -128,6 +138,7 @@ namespace PreyectoDesarrollo_unicah
             lblPersona.Size = new Size(132, 18);
             lblPersona.TabIndex = 16;
             lblPersona.Text = "Nombre_Persona";
+            lblPersona.Click += lblPersona_Click;
             // 
             // pictureBox3
             // 
@@ -193,7 +204,7 @@ namespace PreyectoDesarrollo_unicah
             label1.AutoSize = true;
             label1.Location = new Point(453, 99);
             label1.Name = "label1";
-            label1.Size = new Size(129, 15);
+            label1.Size = new Size(130, 15);
             label1.TabIndex = 12;
             label1.Text = "MIGRACI�N DE DATOS";
             // 
@@ -276,16 +287,6 @@ namespace PreyectoDesarrollo_unicah
             btnPeriodo.Text = "Definir Periodo";
             btnPeriodo.UseVisualStyleBackColor = true;
             btnPeriodo.Click += btnPeriodo_Click;
-            // 
-            // btnSQL
-            // 
-            btnSQL.Location = new Point(774, 446);
-            btnSQL.Name = "btnSQL";
-            btnSQL.Size = new Size(133, 22);
-            btnSQL.TabIndex = 26;
-            btnSQL.Text = "&MIGRAR EXCEL A SQL";
-            btnSQL.UseVisualStyleBackColor = true;
-            btnSQL.Click += btnSQL_Click;
             // 
             // frmMigracion
             // 

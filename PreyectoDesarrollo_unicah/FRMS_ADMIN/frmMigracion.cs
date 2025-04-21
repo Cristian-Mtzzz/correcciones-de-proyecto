@@ -358,5 +358,10 @@ namespace PreyectoDesarrollo_unicah
             }
             MessageBox.Show("Importaci�n completada exitosamente.", "�xito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void lblPersona_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

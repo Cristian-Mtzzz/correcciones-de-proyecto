@@ -51,15 +51,16 @@
             panel1.Controls.Add(pictureBox1);
             panel1.Location = new Point(12, 3);
             panel1.Name = "panel1";
-            panel1.Size = new Size(765, 81);
+            panel1.Size = new Size(1348, 81);
             panel1.TabIndex = 6;
+            panel1.Paint += panel1_Paint;
             // 
             // lblPersona
             // 
             lblPersona.AutoSize = true;
             lblPersona.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPersona.ForeColor = Color.White;
-            lblPersona.Location = new Point(633, 56);
+            lblPersona.Location = new Point(1216, 60);
             lblPersona.Name = "lblPersona";
             lblPersona.Size = new Size(132, 18);
             lblPersona.TabIndex = 12;
@@ -79,7 +80,7 @@
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.minimizar_signo;
-            pictureBox2.Location = new Point(698, 0);
+            pictureBox2.Location = new Point(1281, 3);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(29, 20);
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
@@ -89,7 +90,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.CERRAR;
-            pictureBox1.Location = new Point(733, 0);
+            pictureBox1.Location = new Point(1316, 3);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(29, 20);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -98,7 +99,7 @@
             // 
             // btncargar
             // 
-            btncargar.Location = new Point(675, 403);
+            btncargar.Location = new Point(1239, 751);
             btncargar.Name = "btncargar";
             btncargar.Size = new Size(99, 35);
             btncargar.TabIndex = 7;
@@ -111,19 +112,20 @@
             dgvMigrar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvMigrar.Location = new Point(27, 99);
             dgvMigrar.Name = "dgvMigrar";
-            dgvMigrar.Size = new Size(752, 294);
+            dgvMigrar.Size = new Size(1320, 646);
             dgvMigrar.TabIndex = 8;
             // 
             // FrmMigrar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1359, 798);
             Controls.Add(dgvMigrar);
             Controls.Add(btncargar);
             Controls.Add(panel1);
             Name = "FrmMigrar";
             Text = "FrmMigrar";
+            Load += FrmMigrar_Load;
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();

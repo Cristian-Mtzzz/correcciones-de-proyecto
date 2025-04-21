@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Data;
 using System.IO;
 using ExcelDataReader;
+using PreyectoDesarrollo_unicah.CLASES;
 //System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
 
@@ -59,6 +60,9 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                             // Obtener la primera hoja
                             DataTable table = result.Tables[0];
 
+                            // Deshabilitar encabezados predeterminados del DataGridView
+                            dgvMigrar.ColumnHeadersVisible = false;
+
                             // Cargar al DataGridView
                             dgvMigrar.DataSource = table;
                         }
@@ -72,6 +76,15 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
         }
 
 
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void FrmMigrar_Load(object sender, EventArgs e)
+        {
+            lblPersona.Text = ACCIONES_BD.Persona();
+        }
     }
 }
 
