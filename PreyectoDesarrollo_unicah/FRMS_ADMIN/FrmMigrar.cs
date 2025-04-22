@@ -460,7 +460,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                         }
                     }
 
-                    conexionBD.cerrar();
+
                 }
             }
 
