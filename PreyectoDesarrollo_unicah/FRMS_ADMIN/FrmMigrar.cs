@@ -13,6 +13,7 @@ using ExcelDataReader;
 using PreyectoDesarrollo_unicah.CLASES;
 using System.Data.SqlClient;
 using DocumentFormat.OpenXml.Spreadsheet;
+using System.Globalization;
 //System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
 
@@ -337,9 +338,6 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
         }*/
 
-
-
-
             string filePath = @"C:\Users\marti\Desktop\FORMATO DE ASISTENCIA PARA REPO.xlsx";
 
             using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
@@ -356,7 +354,6 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
                     DataTable table = result.Tables[0];
 
-                    // Mostrar los nombres de columnas reales
                     string columnas = string.Join("\n", table.Columns.Cast<DataColumn>().Select(c => c.ColumnName));
                     MessageBox.Show("Columnas del Excel:\n" + columnas);
 
@@ -371,47 +368,102 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                     {
                         try
                         {
-                            // Asegúrate que los nombres de las columnas coincidan con los que mostró el MessageBox
+                            // Datos del empleado
                             int codigoEmpleado = int.Parse(row["Column0"]?.ToString().Trim());
                             string primerNombre = row["Column1"]?.ToString().Trim();
                             string segundoNombre = row["Column2"]?.ToString().Trim();
                             string primerApellido = row["Column3"]?.ToString().Trim();
                             string segundoApellido = row["Column4"]?.ToString().Trim();
-                            string facultad = row["Column5"]?.ToString().Trim();
+                            string usuario = row["Column5"]?.ToString().Trim();
+                            string contraseña = row["Column6"]?.ToString().Trim();
+                            string rol = row["Column7"]?.ToString().Trim();
+                            string facultad = row["Column8"]?.ToString().Trim();
 
-                            string checkQuery = "SELECT COUNT(*) FROM Empleados WHERE codigo_empleado = @CodigoEmpleado";
-                            using (SqlCommand checkCmd = new SqlCommand(checkQuery, CONEXION_BD.conectar))
+                            // Datos de la clase (asignatura)
+                            string codAsignatura = row["Column10"]?.ToString().Trim();
+                            string asignatura = row["Column11"]?.ToString().Trim();
+                            string seccion = row["Column12"]?.ToString().Trim();
+                            string edificio = row["Column14"]?.ToString().Trim();
+                            string aula = row["Column13"]?.ToString().Trim(); // Añadido para el aula
+                            string iniciodia = row["Column15"]?.ToString().Trim();
+                            string findia = row["Column16"]?.ToString().Trim();
+                            string diaspermitidos = row["Column17"]?.ToString().Trim();
+
+                            // Insertar en Empleados
+                            string checkEmpleadoQuery = "SELECT COUNT(*) FROM Empleados WHERE codigo_empleado = @CodigoEmpleado";
+                            using (SqlCommand checkCmd = new SqlCommand(checkEmpleadoQuery, CONEXION_BD.conectar))
                             {
                                 checkCmd.Parameters.AddWithValue("@CodigoEmpleado", codigoEmpleado);
                                 int count = (int)checkCmd.ExecuteScalar();
 
-                                if (count == 0) // No existe aún, se puede insertar
+                                if (count == 0)
                                 {
-                                    string query = "INSERT INTO Empleados (codigo_empleado, facultad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) " +
-                                                   "VALUES (@CodigoEmpleado, @Facultad, @PrimerNombre, @SegundoNombre, @PrimerApellido, @SegundoApellido)";
+                                    string insertEmpleadoQuery = @"
+                            INSERT INTO Empleados 
+                                (codigo_empleado, facultad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, usuario, contraseña, rol) 
+                            VALUES 
+                                (@CodigoEmpleado, @Facultad, @PrimerNombre, @SegundoNombre, @PrimerApellido, @SegundoApellido, @Usuario, @Contraseña, @Rol)";
 
-                                    using (SqlCommand cmd = new SqlCommand(query, CONEXION_BD.conectar))
+                                    using (SqlCommand cmd = new SqlCommand(insertEmpleadoQuery, CONEXION_BD.conectar))
                                     {
                                         cmd.Parameters.AddWithValue("@CodigoEmpleado", codigoEmpleado);
                                         cmd.Parameters.AddWithValue("@Facultad", facultad);
                                         cmd.Parameters.AddWithValue("@PrimerNombre", primerNombre);
-                                        cmd.Parameters.AddWithValue("@SegundoNombre", segundoNombre);
+                                        cmd.Parameters.AddWithValue("@SegundoNombre", segundoNombre ?? "");
                                         cmd.Parameters.AddWithValue("@PrimerApellido", primerApellido);
-                                        cmd.Parameters.AddWithValue("@SegundoApellido", segundoApellido);
+                                        cmd.Parameters.AddWithValue("@SegundoApellido", segundoApellido ?? "");
+                                        cmd.Parameters.AddWithValue("@Usuario", usuario);
+                                        cmd.Parameters.AddWithValue("@Contraseña", contraseña);
+                                        cmd.Parameters.AddWithValue("@Rol", rol);
 
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
                             }
-                            }catch (Exception ex)
+
+                            // Insertar en Clases
+                            string checkClaseQuery = "SELECT COUNT(*) FROM Clases WHERE cod_Asignatura = @CodAsignatura AND seccion = @Seccion";
+                            using (SqlCommand checkCmd = new SqlCommand(checkClaseQuery, CONEXION_BD.conectar))
+                            {
+                                checkCmd.Parameters.AddWithValue("@CodAsignatura", codAsignatura);
+                                checkCmd.Parameters.AddWithValue("@Seccion", seccion);
+                                int count = (int)checkCmd.ExecuteScalar();
+
+                                if (count == 0)
+                                {
+                                    string insertClaseQuery = @"
+                            INSERT INTO Clases 
+                                (cod_Asignatura, Facultad, asignatura, edificio, aula, seccion, inicioDia, finDia, diasPermitidos) 
+                            VALUES 
+                                (@CodAsignatura, @Facultad, @Asignatura, @Edificio, @Aula, @Seccion, @InicioDia, @FinDia, @DiasPermitidos)";
+
+                                    using (SqlCommand cmd = new SqlCommand(insertClaseQuery, CONEXION_BD.conectar))
+                                    {
+                                        cmd.Parameters.AddWithValue("@CodAsignatura", codAsignatura);
+                                        cmd.Parameters.AddWithValue("@Facultad", facultad);
+                                        cmd.Parameters.AddWithValue("@Asignatura", asignatura);
+                                        cmd.Parameters.AddWithValue("@Edificio", edificio ?? "N/A");
+                                        cmd.Parameters.AddWithValue("@Aula", aula);
+                                        cmd.Parameters.AddWithValue("@Seccion", seccion);
+                                        cmd.Parameters.AddWithValue("@InicioDia", iniciodia);  // Usar el valor tal cual del Excel
+                                        cmd.Parameters.AddWithValue("@FinDia", findia);     // Usar el valor tal cual del Excel
+                                        cmd.Parameters.AddWithValue("@DiasPermitidos", diaspermitidos);
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
                         {
-                            MessageBox.Show($"Error al insertar fila: {ex.Message}");
+                            MessageBox.Show($"Error al procesar fila: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
 
                     conexionBD.cerrar();
                 }
             }
+
         }
     }
 }
