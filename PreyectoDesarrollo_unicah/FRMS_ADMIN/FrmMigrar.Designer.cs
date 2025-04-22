@@ -110,9 +110,12 @@
             // 
             // dgvMigrar
             // 
+            dgvMigrar.AllowUserToAddRows = false;
+            dgvMigrar.AllowUserToDeleteRows = false;
             dgvMigrar.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvMigrar.Location = new Point(27, 99);
             dgvMigrar.Name = "dgvMigrar";
+            dgvMigrar.ReadOnly = true;
             dgvMigrar.Size = new Size(1320, 646);
             dgvMigrar.TabIndex = 8;
             // 
@@ -157,5 +160,18 @@
         private Button btncargar;
         private DataGridView dgvMigrar;
         private Button btnGuardar;
+        private DataGridViewTextBoxColumn Primer_nombre;
+        private DataGridViewTextBoxColumn Segundo_nombre;
+        private DataGridViewTextBoxColumn Primer_apellido;
+        private DataGridViewTextBoxColumn Segundo_apellido;
+        private DataGridViewTextBoxColumn facultad;
+        private DataGridViewTextBoxColumn Codigo_facultad;
+        private DataGridViewTextBoxColumn Codigo_clase;
+        private DataGridViewTextBoxColumn Asignatura;
+        private DataGridViewTextBoxColumn Seccion;
+        private DataGridViewTextBoxColumn Aula;
+        private DataGridViewTextBoxColumn Edificio;
+        private DataGridViewTextBoxColumn Fecha_inicio;
+        private DataGridViewTextBoxColumn Fecha_final;
     }
 }

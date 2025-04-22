@@ -12,6 +12,7 @@ using System.IO;
 using ExcelDataReader;
 using PreyectoDesarrollo_unicah.CLASES;
 using System.Data.SqlClient;
+using DocumentFormat.OpenXml.Spreadsheet;
 //System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
 
@@ -27,7 +28,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
 
 
-        /*private bool CodigoFacultadExiste(string codigoFacultad)
+        private bool CodigoFacultadExiste(string codigoFacultad)
         {
             using (SqlConnection conexion = new SqlConnection(CONEXION_BD.conexion))
             {
@@ -41,7 +42,10 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                 }
             }
         }
-        */
+        
+
+
+        
         private void InsertarEmpleado(string codigoEmpleado, string primerNombre, string segundoNombre, string primerApellido, string segundoApellido)
         {
             using (SqlConnection conexion = new SqlConnection(CONEXION_BD.conexion))
@@ -89,7 +93,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
             }
         }
 
-
+        
         private void GuardarDatos()
         {
             foreach (DataGridViewRow row in dgvMigrar.Rows)
@@ -122,7 +126,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                      }*/
 
                     // Guardar en la tabla empleados
-                    InsertarEmpleado(codigoEmpleado, primerNombre, segundoNombre, primerApellido, segundoApellido);
+                   InsertarEmpleado(codigoEmpleado, primerNombre, segundoNombre, primerApellido, segundoApellido);
 
                     // Guardar en la tabla Clases
                     InsertarClase(codigoAsignatura, codigoFacultad, asignatura, seccion, aula, edificio, fechaInicio, fechaFinal);
@@ -135,7 +139,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
             MessageBox.Show("Datos guardados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
+                   
 
         private void btncargar_Click(object sender, EventArgs e)
         {
@@ -191,16 +195,141 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
         {
 
         }
+        /*
+        private void loaddata()
+        {
+            using (CONEXION_BD.conectar)
+            {
+                CONEXION_BD.conectar.Open();
+                SqlCommand verificar = new SqlCommand("select primer_nombre, segundo_nombre, primer_apellido, segundo_apellido from empleados where codigo_empleado=@ codigoEmpleado", CONEXION_BD.conectar);
+                dgvMigrar.columns[0].readOnly = true ;
+
+                object resultado = verificar.ExecuteScalar();
+
+                if (resultado == null)
+
+                }
+        }*/
 
         private void FrmMigrar_Load(object sender, EventArgs e)
         {
             lblPersona.Text = ACCIONES_BD.Persona();
+
+            CONEXION_BD.conectar.Open();
+            //loaddata();
         }
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            GuardarDatos();
+            //GuardarDatos();
+
+            /*
+            int filasagregadas = 0;
+            foreach (DataGridViewRow row in dgvMigrar.Rows)
+            {
+                if (row.IsNewRow) continue; // Ignorar la fila nueva
+
+                //int codigoEmpleado = Convert.ToInt32(row.Cells[0].Value); // Código de empleado
+                string primerNombre = row.Cells[1].Value?.ToString();
+                string segundoNombre = row.Cells[2].Value?.ToString();
+                string primerApellido = row.Cells[3].Value?.ToString();
+                string segundoApellido = row.Cells[4].Value?.ToString();
+                string facultad = row.Cells[5].Value?.ToString();
+                string codigoFacultad = row.Cells[6].Value?.ToString(); // Código de Facultad
+                string codigoAsignatura = row.Cells[7].Value?.ToString(); // Código de Clase
+                string asignatura = row.Cells[8].Value?.ToString(); // Asignatura
+                string seccion = row.Cells[9].Value?.ToString(); // Sección
+                string aula = row.Cells[10].Value?.ToString(); // Aula
+                string edificio = row.Cells[11].Value?.ToString(); // Edificio
+                string fechaInicio = row.Cells[12].Value?.ToString(); // Fecha inicio
+                string fechaFinal = row.Cells[13].Value?.ToString(); // Fecha final
+
+                // Aquí puedes procesar los datos o insertarlos en la base de datos
+
+            */
+
+
+
+
+
+
+
+
+            CONEXION_BD conexionBD = new CONEXION_BD();
+
+            try
+            {
+                conexionBD.abrir(); // Abrir la conexión
+
+                foreach (DataGridViewRow row in dgvMigrar.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    // === Datos para empleados ===
+                    string cod= row.Cells[""].Value?.ToString();
+                    string primerNombre = row.Cells["Primer Nombre"].Value?.ToString();
+                    string segundoNombre = row.Cells["Segundo Nombre"].Value?.ToString();
+                    string primerApellido = row.Cells["Primer Apellido"].Value?.ToString();
+                    string segundoApellido = row.Cells["Segundo Apellido"].Value?.ToString();
+                    string facultad = row.Cells["Facultad"].Value?.ToString();
+
+                    string queryEmpleados = "INSERT INTO empleados (codigo_empleado, facultad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) " +
+                                            "VALUES (@codigo_empleado, @facultad, @primer_nombre, @segundo_nombre, @primer_apellido, @segundo_apellido)";
+
+                    using (SqlCommand cmd = new SqlCommand(queryEmpleados, CONEXION_BD.conectar))
+                    {
+                        cmd.Parameters.AddWithValue("@codigo_empleado", GenerarCodigoEmpleado());
+                        cmd.Parameters.AddWithValue("@facultad", facultad);
+                        cmd.Parameters.AddWithValue("@primer_nombre", primerNombre);
+                        cmd.Parameters.AddWithValue("@segundo_nombre", segundoNombre);
+                        cmd.Parameters.AddWithValue("@primer_apellido", primerApellido);
+                        cmd.Parameters.AddWithValue("@segundo_apellido", segundoApellido);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // === Datos para clases ===
+                    string codAsignatura = row.Cells["Código de Clase"].Value?.ToString();
+                    string asignatura = row.Cells["Asignatura"].Value?.ToString();
+                    string seccion = row.Cells["Sección"].Value?.ToString();
+                    string aula = row.Cells["Aula"].Value?.ToString();
+                    string edificio = row.Cells["Edificio"].Value?.ToString();
+
+                    string queryClases = "INSERT INTO Clases (cod_Asignatura, Facultad, asignatura, edificio, aula, seccion) " +
+                                         "VALUES (@cod_Asignatura, @Facultad, @asignatura, @edificio, @aula, @seccion)";
+
+                    using (SqlCommand cmd = new SqlCommand(queryClases, CONEXION_BD.conectar))
+                    {
+                        cmd.Parameters.AddWithValue("@cod_Asignatura", codAsignatura);
+                        cmd.Parameters.AddWithValue("@Facultad", facultad);
+                        cmd.Parameters.AddWithValue("@asignatura", asignatura);
+                        cmd.Parameters.AddWithValue("@edificio", edificio);
+                        cmd.Parameters.AddWithValue("@aula", aula);
+                        cmd.Parameters.AddWithValue("@seccion", seccion);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                MessageBox.Show("Datos insertados correctamente.", "Éxito");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"ERROR al guardar los datos: {ex.Message}", "ERROR");
+            }
+            finally
+            {
+                conexionBD.cerrar(); // Cerrar la conexión al final
+            }
+        }
+
+        // Puedes mejorar esto con un autoincremento real desde la base si lo prefieres
+        private int GenerarCodigoEmpleado()
+        {
+            Random rnd = new Random();
+            return rnd.Next(1000, 9999); // Puedes reemplazar esto por una consulta si lo deseas autoincremental
+
+        }
+
         }
     }
-}
+
 
