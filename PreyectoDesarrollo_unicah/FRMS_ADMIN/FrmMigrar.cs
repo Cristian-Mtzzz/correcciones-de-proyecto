@@ -24,6 +24,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
         public FrmMigrar()
         {
             InitializeComponent();
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         }
 
 
@@ -42,10 +43,10 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                 }
             }
         }
-        
 
 
-        
+
+
         private void InsertarEmpleado(string codigoEmpleado, string primerNombre, string segundoNombre, string primerApellido, string segundoApellido)
         {
             using (SqlConnection conexion = new SqlConnection(CONEXION_BD.conexion))
@@ -93,7 +94,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
             }
         }
 
-        
+
         private void GuardarDatos()
         {
             foreach (DataGridViewRow row in dgvMigrar.Rows)
@@ -106,7 +107,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                 string segundoNombre = row.Cells[2].Value?.ToString();
                 string primerApellido = row.Cells[3].Value?.ToString();
                 string segundoApellido = row.Cells[4].Value?.ToString();
-                string facultad = row.Cells[5].Value?.ToString(); 
+                string facultad = row.Cells[5].Value?.ToString();
                 string codigoFacultad = row.Cells[6].Value?.ToString(); // Código de Facultad
                 string codigoAsignatura = row.Cells[7].Value?.ToString(); // Código de Clase
                 string asignatura = row.Cells[8].Value?.ToString(); // Asignatura
@@ -126,7 +127,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                      }*/
 
                     // Guardar en la tabla empleados
-                   InsertarEmpleado(codigoEmpleado, primerNombre, segundoNombre, primerApellido, segundoApellido);
+                    InsertarEmpleado(codigoEmpleado, primerNombre, segundoNombre, primerApellido, segundoApellido);
 
                     // Guardar en la tabla Clases
                     InsertarClase(codigoAsignatura, codigoFacultad, asignatura, seccion, aula, edificio, fechaInicio, fechaFinal);
@@ -139,7 +140,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
             MessageBox.Show("Datos guardados correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-                   
+
 
         private void btncargar_Click(object sender, EventArgs e)
         {
@@ -174,6 +175,13 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
                             // Obtener la primera hoja
                             DataTable table = result.Tables[0];
+
+                            //mostrar datos
+                            foreach (DataColumn col in table.Columns)
+                            {
+                                Console.WriteLine("Columna: " + col.ColumnName);
+                                MessageBox.Show("Columna: " + col.ColumnName);
+                            }
 
                             // Deshabilitar encabezados predeterminados del DataGridView
                             dgvMigrar.ColumnHeadersVisible = false;
@@ -253,7 +261,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
 
 
-
+            /*
 
             CONEXION_BD conexionBD = new CONEXION_BD();
 
@@ -266,7 +274,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                     if (row.IsNewRow) continue;
 
                     // === Datos para empleados ===
-                    string cod= row.Cells[""].Value?.ToString();
+                    
                     string primerNombre = row.Cells["Primer Nombre"].Value?.ToString();
                     string segundoNombre = row.Cells["Segundo Nombre"].Value?.ToString();
                     string primerApellido = row.Cells["Primer Apellido"].Value?.ToString();
@@ -327,9 +335,85 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
             Random rnd = new Random();
             return rnd.Next(1000, 9999); // Puedes reemplazar esto por una consulta si lo deseas autoincremental
 
-        }
+        }*/
 
+
+
+
+            string filePath = @"C:\Users\marti\Desktop\FORMATO DE ASISTENCIA PARA REPO.xlsx";
+
+            using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                    {
+                        ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                        {
+                            UseHeaderRow = true
+                        }
+                    });
+
+                    DataTable table = result.Tables[0];
+
+                    // Mostrar los nombres de columnas reales
+                    string columnas = string.Join("\n", table.Columns.Cast<DataColumn>().Select(c => c.ColumnName));
+                    MessageBox.Show("Columnas del Excel:\n" + columnas);
+
+                    // Mostrar en DataGridView
+                    dgvMigrar.DataSource = table;
+
+                    // Abrir conexión
+                    CONEXION_BD conexionBD = new CONEXION_BD();
+                    conexionBD.abrir();
+
+                    foreach (DataRow row in table.Rows)
+                    {
+                        try
+                        {
+                            // Asegúrate que los nombres de las columnas coincidan con los que mostró el MessageBox
+                            int codigoEmpleado = int.Parse(row["Column0"]?.ToString().Trim());
+                            string primerNombre = row["Column1"]?.ToString().Trim();
+                            string segundoNombre = row["Column2"]?.ToString().Trim();
+                            string primerApellido = row["Column3"]?.ToString().Trim();
+                            string segundoApellido = row["Column4"]?.ToString().Trim();
+                            string facultad = row["Column5"]?.ToString().Trim();
+
+                            string checkQuery = "SELECT COUNT(*) FROM Empleados WHERE codigo_empleado = @CodigoEmpleado";
+                            using (SqlCommand checkCmd = new SqlCommand(checkQuery, CONEXION_BD.conectar))
+                            {
+                                checkCmd.Parameters.AddWithValue("@CodigoEmpleado", codigoEmpleado);
+                                int count = (int)checkCmd.ExecuteScalar();
+
+                                if (count == 0) // No existe aún, se puede insertar
+                                {
+                                    string query = "INSERT INTO Empleados (codigo_empleado, facultad, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido) " +
+                                                   "VALUES (@CodigoEmpleado, @Facultad, @PrimerNombre, @SegundoNombre, @PrimerApellido, @SegundoApellido)";
+
+                                    using (SqlCommand cmd = new SqlCommand(query, CONEXION_BD.conectar))
+                                    {
+                                        cmd.Parameters.AddWithValue("@CodigoEmpleado", codigoEmpleado);
+                                        cmd.Parameters.AddWithValue("@Facultad", facultad);
+                                        cmd.Parameters.AddWithValue("@PrimerNombre", primerNombre);
+                                        cmd.Parameters.AddWithValue("@SegundoNombre", segundoNombre);
+                                        cmd.Parameters.AddWithValue("@PrimerApellido", primerApellido);
+                                        cmd.Parameters.AddWithValue("@SegundoApellido", segundoApellido);
+
+                                        cmd.ExecuteNonQuery();
+                                    }
+                                }
+                            }
+                            }catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error al insertar fila: {ex.Message}");
+                        }
+                    }
+
+                    conexionBD.cerrar();
+                }
+            }
         }
     }
+}
 
 
