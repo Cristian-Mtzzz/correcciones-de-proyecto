@@ -52,22 +52,72 @@ namespace PreyectoDesarrollo_unicah
         }
 
 
+
+        private void CargarAsistencias()
+        {
+            dgvAsiste.Columns.Clear();
+            dgvAsiste.Rows.Clear();
+
+            using (SqlConnection con = new SqlConnection(CONEXION_BD.conexion))
+            {
+                try
+                {
+                    con.Open();
+                    SqlCommand cmd = new SqlCommand("PA_ObtenerAsistencia", con);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    da.Fill(dt);
+
+                    dgvAsiste.DataSource = dt;
+
+                    // Detectar columnas de asistencia por nombre y poner checkbox
+                    foreach (DataGridViewColumn col in dgvAsiste.Columns)
+                    {
+                        if (col.Name.StartsWith("Semana") && col.ValueType == typeof(bool))
+                        {
+                            DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn
+                            {
+                                Name = col.Name,
+                                HeaderText = col.HeaderText,
+                                DataPropertyName = col.DataPropertyName,
+                                TrueValue = true,
+                                FalseValue = false,
+                                IndeterminateValue = false
+                            };
+                            int index = col.Index;
+                            dgvAsiste.Columns.Remove(col);
+                            dgvAsiste.Columns.Insert(index, chk);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al cargar la asistencia: " + ex.Message);
+                }
+            }
+        }
+
+
+
+
         private void FrmAsiste_Load(object sender, EventArgs e)
         {
             lblPersona.Text = ACCIONES_BD.Persona();
+            CargarAsistencias(); // Ya carga y convierte columnas en checkbox
 
-            dgvAsiste = (dgvAsiste as DataGridView);
-
-            FiltroInicial();
-
-            dgvAsiste.CurrentCellDirtyStateChanged += (s, ev)
-            => {
+            dgvAsiste.CurrentCellDirtyStateChanged += (s, ev) =>
+            {
                 if (dgvAsiste.IsCurrentCellDirty)
                     dgvAsiste.CommitEdit(DataGridViewDataErrorContexts.Commit);
-               };
-
-            ACCIONES_BD.tablaSupervisor(dgvAsiste);
+            };
         }
+
+
+
+
+
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
@@ -87,13 +137,13 @@ namespace PreyectoDesarrollo_unicah
 
         private void Filtros(object sender, EventArgs e)
         {
-            ACCIONES_BD.FiltrarDatosSuperv(txtDoc.Text, txtClase.Text, cmbAula.Text, cmbEdificio.Text, cmbSeccion.Text, dgvAsiste);
+            // ACCIONES_BD.FiltrarDatosSuperv(txtDoc.Text, txtClase.Text, cmbAula.Text, cmbEdificio.Text, cmbSeccion.Text, dgvAsiste);
 
         }
 
         private void dgvAsiste_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0 || e.ColumnIndex < 0)
+            /*/if (e.RowIndex < 0 || e.ColumnIndex < 0)
                 return;
 
             var columna = dgvAsiste.Columns[e.ColumnIndex];
@@ -109,13 +159,62 @@ namespace PreyectoDesarrollo_unicah
                 bool marca = Convert.ToBoolean(fila.Cells["AsistenciaHoy"].Value);
 
                 ACCIONES_BD.RegistrarAsistencia(dgvAsiste, docente, asignatura, seccion, aula, edificio, marca);
-            }
+            }*/
         }
 
         private void dgvAsiste_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvAsiste.Columns[e.ColumnIndex].Name == "AsistenciaHoy" && e.RowIndex >= 0)
-                dgvAsiste.CommitEdit(DataGridViewDataErrorContexts.Commit);
+            /*if (dgvAsiste.Columns[e.ColumnIndex].Name == "AsistenciaHoy" && e.RowIndex >= 0)
+                dgvAsiste.CommitEdit(DataGridViewDataErrorContexts.Commit);*/
         }
+
+
+
+
+        // boton de guardar asistencia
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CONEXION_BD conexionBD = new CONEXION_BD();
+                conexionBD.abrir();
+
+                foreach (DataGridViewRow row in dgvAsiste.Rows)
+                {
+                    if (row.IsNewRow) continue;
+
+                    SqlCommand cmd = new SqlCommand("PA_InsertarActualizarAsistencia", CONEXION_BD.conectar);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@codigo_empleado", Convert.ToInt32(row.Cells["codigo_empleado"].Value));
+                    cmd.Parameters.AddWithValue("@cod_Asignatura", row.Cells["cod_Asignatura"].Value?.ToString());
+
+                    for (int semana = 1; semana <= 4; semana++)
+                    {
+                        string[] dias = { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes" };
+                        foreach (string dia in dias)
+                        {
+                            string columna = $"Semana{semana}_{dia}";
+                            bool valor = false;
+
+                            if (row.Cells[columna].Value != DBNull.Value && row.Cells[columna].Value != null)
+                                valor = Convert.ToBoolean(row.Cells[columna].Value);
+
+                            cmd.Parameters.AddWithValue($"@{columna}", valor);
+                        }
+                    }
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                MessageBox.Show("Asistencia guardada correctamente.");
+                conexionBD.cerrar();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al guardar asistencia: " + ex.Message);
+            }
+        }
+
     }
 }

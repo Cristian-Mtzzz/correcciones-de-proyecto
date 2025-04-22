@@ -28,6 +28,7 @@ namespace PreyectoDesarrollo_unicah
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             Button btnLogout;
             pictureBox2 = new PictureBox();
             pictureBox1 = new PictureBox();
@@ -35,34 +36,31 @@ namespace PreyectoDesarrollo_unicah
             lblPersona = new Label();
             pictureBox3 = new PictureBox();
             dgvDoc = new DataGridView();
-            clmClase = new DataGridViewTextBoxColumn();
-            clmSeccion = new DataGridViewTextBoxColumn();
             label1 = new Label();
-            mesDoc = new MonthCalendar();
-            lblWeek = new Label();
-            lblParcial = new Label();
+            sqlDataReaderBindingSource = new BindingSource(components);
             btnLogout = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvDoc).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)sqlDataReaderBindingSource).BeginInit();
             SuspendLayout();
             // 
             // btnLogout
             // 
-            btnLogout.Location = new Point(425, 311);
+            btnLogout.Location = new Point(973, 660);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(126, 23);
             btnLogout.TabIndex = 17;
-            btnLogout.Text = "&CERRAR SESI�N";
+            btnLogout.Text = "&CERRAR SESIÓN";
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
             // 
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.minimizar_signo;
-            pictureBox2.Location = new Point(507, 3);
+            pictureBox2.Location = new Point(1045, 0);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(29, 20);
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
@@ -73,7 +71,7 @@ namespace PreyectoDesarrollo_unicah
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.CERRAR;
-            pictureBox1.Location = new Point(542, 3);
+            pictureBox1.Location = new Point(1080, 0);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(29, 20);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -90,7 +88,7 @@ namespace PreyectoDesarrollo_unicah
             panel1.Controls.Add(pictureBox1);
             panel1.Location = new Point(-4, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(574, 87);
+            panel1.Size = new Size(1109, 87);
             panel1.TabIndex = 11;
             panel1.MouseDown += panel1_MouseDown;
             // 
@@ -99,7 +97,7 @@ namespace PreyectoDesarrollo_unicah
             lblPersona.AutoSize = true;
             lblPersona.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPersona.ForeColor = Color.White;
-            lblPersona.Location = new Point(386, 63);
+            lblPersona.Location = new Point(977, 63);
             lblPersona.Name = "lblPersona";
             lblPersona.Size = new Size(132, 18);
             lblPersona.TabIndex = 22;
@@ -122,74 +120,33 @@ namespace PreyectoDesarrollo_unicah
             dgvDoc.AllowUserToAddRows = false;
             dgvDoc.AllowUserToDeleteRows = false;
             dgvDoc.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvDoc.Columns.AddRange(new DataGridViewColumn[] { clmClase, clmSeccion });
             dgvDoc.Location = new Point(12, 139);
             dgvDoc.Name = "dgvDoc";
-            dgvDoc.ReadOnly = true;
             dgvDoc.RowHeadersWidth = 51;
-            dgvDoc.Size = new Size(261, 162);
+            dgvDoc.Size = new Size(1058, 515);
             dgvDoc.TabIndex = 16;
             dgvDoc.CellContentClick += dgvDoc_CellContentClick;
             dgvDoc.SelectionChanged += dgvDoc_SelectionChanged;
             // 
-            // clmClase
-            // 
-            clmClase.HeaderText = "Asignatura";
-            clmClase.MinimumWidth = 6;
-            clmClase.Name = "clmClase";
-            clmClase.ReadOnly = true;
-            clmClase.Width = 150;
-            // 
-            // clmSeccion
-            // 
-            clmSeccion.HeaderText = "Secci�n";
-            clmSeccion.MinimumWidth = 6;
-            clmSeccion.Name = "clmSeccion";
-            clmSeccion.ReadOnly = true;
-            clmSeccion.Width = 58;
-            // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(221, 90);
+            label1.Location = new Point(466, 90);
             label1.Name = "label1";
-            label1.Size = new Size(132, 15);
+            label1.Size = new Size(131, 15);
             label1.TabIndex = 15;
             label1.Text = "ASISTENCIA PERSONAL";
             // 
-            // mesDoc
+            // sqlDataReaderBindingSource
             // 
-            mesDoc.Location = new Point(284, 139);
-            mesDoc.Name = "mesDoc";
-            mesDoc.TabIndex = 22;
-            mesDoc.DateSelected += mesDoc_DateSelected;
-            // 
-            // lblWeek
-            // 
-            lblWeek.AutoSize = true;
-            lblWeek.Location = new Point(455, 120);
-            lblWeek.Name = "lblWeek";
-            lblWeek.Size = new Size(49, 15);
-            lblWeek.TabIndex = 24;
-            lblWeek.Text = "Semana";
-            // 
-            // lblParcial
-            // 
-            lblParcial.AutoSize = true;
-            lblParcial.Location = new Point(311, 120);
-            lblParcial.Name = "lblParcial";
-            lblParcial.Size = new Size(42, 15);
-            lblParcial.TabIndex = 23;
-            lblParcial.Text = "Parcial";
+            sqlDataReaderBindingSource.DataSource = typeof(System.Data.SqlClient.SqlDataReader);
+            sqlDataReaderBindingSource.CurrentChanged += sqlDataReaderBindingSource_CurrentChanged;
             // 
             // frmDocente
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(569, 346);
-            Controls.Add(lblWeek);
-            Controls.Add(lblParcial);
-            Controls.Add(mesDoc);
+            ClientSize = new Size(1104, 695);
             Controls.Add(btnLogout);
             Controls.Add(dgvDoc);
             Controls.Add(label1);
@@ -205,6 +162,7 @@ namespace PreyectoDesarrollo_unicah
             panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)dgvDoc).EndInit();
+            ((System.ComponentModel.ISupportInitialize)sqlDataReaderBindingSource).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -218,10 +176,6 @@ namespace PreyectoDesarrollo_unicah
         private Label label1;
         private Label lblPersona;
         private PictureBox pictureBox3;
-        private DataGridViewTextBoxColumn clmClase;
-        private DataGridViewTextBoxColumn clmSeccion;
-        private MonthCalendar mesDoc;
-        private Label lblWeek;
-        private Label lblParcial;
+        private BindingSource sqlDataReaderBindingSource;
     }
 }

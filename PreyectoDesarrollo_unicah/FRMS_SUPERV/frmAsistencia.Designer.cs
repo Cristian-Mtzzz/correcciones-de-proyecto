@@ -36,24 +36,19 @@
             pictureBox3 = new PictureBox();
             label1 = new Label();
             dgvAsiste = new DataGridView();
-            clmDoc = new DataGridViewTextBoxColumn();
-            clmClase = new DataGridViewTextBoxColumn();
-            clmSeccion = new DataGridViewTextBoxColumn();
-            clmAula = new DataGridViewTextBoxColumn();
-            clmEdificio = new DataGridViewTextBoxColumn();
-            clmFecha = new DataGridViewCheckBoxColumn();
             label5 = new Label();
             txtClase = new TextBox();
             cmbAula = new ComboBox();
             cmbEdificio = new ComboBox();
             gbFiltro = new GroupBox();
-            label2 = new Label();
-            cmbSeccion = new ComboBox();
             label4 = new Label();
             label3 = new Label();
+            label2 = new Label();
+            cmbSeccion = new ComboBox();
             label6 = new Label();
             txtDoc = new TextBox();
             btnLogout = new Button();
+            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
@@ -72,7 +67,7 @@
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.minimizar_signo;
-            pictureBox2.Location = new Point(937, 3);
+            pictureBox2.Location = new Point(1070, 3);
             pictureBox2.Name = "pictureBox2";
             pictureBox2.Size = new Size(29, 21);
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
@@ -83,7 +78,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.CERRAR;
-            pictureBox1.Location = new Point(972, 3);
+            pictureBox1.Location = new Point(1105, 3);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(29, 21);
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
@@ -100,7 +95,7 @@
             panel1.Controls.Add(pictureBox1);
             panel1.Location = new Point(-4, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1003, 87);
+            panel1.Size = new Size(1137, 87);
             panel1.TabIndex = 11;
             // 
             // lblPersona
@@ -108,7 +103,7 @@
             lblPersona.AutoSize = true;
             lblPersona.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblPersona.ForeColor = Color.White;
-            lblPersona.Location = new Point(869, 63);
+            lblPersona.Location = new Point(1002, 63);
             lblPersona.Name = "lblPersona";
             lblPersona.Size = new Size(132, 18);
             lblPersona.TabIndex = 23;
@@ -130,7 +125,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(487, 97);
             label1.Name = "label1";
-            label1.Size = new Size(125, 15);
+            label1.Size = new Size(123, 15);
             label1.TabIndex = 12;
             label1.Text = "TOMA DE ASISTENCIA";
             // 
@@ -139,50 +134,12 @@
             dgvAsiste.AllowUserToAddRows = false;
             dgvAsiste.AllowUserToDeleteRows = false;
             dgvAsiste.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvAsiste.Columns.AddRange(new DataGridViewColumn[] { clmDoc, clmClase, clmSeccion, clmAula, clmEdificio, clmFecha });
             dgvAsiste.Location = new Point(20, 224);
             dgvAsiste.Name = "dgvAsiste";
-            dgvAsiste.Size = new Size(877, 245);
+            dgvAsiste.Size = new Size(1089, 436);
             dgvAsiste.TabIndex = 17;
             dgvAsiste.CellContentClick += dgvAsiste_CellContentClick;
             dgvAsiste.CellValueChanged += dgvAsiste_CellValueChanged;
-            // 
-            // clmDoc
-            // 
-            clmDoc.HeaderText = "Docente";
-            clmDoc.Name = "clmDoc";
-            clmDoc.Width = 300;
-            // 
-            // clmClase
-            // 
-            clmClase.HeaderText = "Asignatura";
-            clmClase.Name = "clmClase";
-            clmClase.Width = 250;
-            // 
-            // clmSeccion
-            // 
-            clmSeccion.HeaderText = "Sección";
-            clmSeccion.Name = "clmSeccion";
-            clmSeccion.Width = 60;
-            // 
-            // clmAula
-            // 
-            clmAula.HeaderText = "Aula";
-            clmAula.Name = "clmAula";
-            clmAula.Width = 150;
-            // 
-            // clmEdificio
-            // 
-            clmEdificio.HeaderText = "Edificio";
-            clmEdificio.Name = "clmEdificio";
-            // 
-            // clmFecha
-            // 
-            clmFecha.HeaderText = "Presente";
-            clmFecha.Name = "clmFecha";
-            clmFecha.Resizable = DataGridViewTriState.True;
-            clmFecha.SortMode = DataGridViewColumnSortMode.Automatic;
-            clmFecha.Width = 55;
             // 
             // label5
             // 
@@ -236,6 +193,24 @@
             gbFiltro.TabStop = false;
             gbFiltro.Text = "Filtros";
             // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(178, 22);
+            label4.Name = "label4";
+            label4.Size = new Size(34, 15);
+            label4.TabIndex = 44;
+            label4.Text = "Aula:";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(43, 25);
+            label3.Name = "label3";
+            label3.Size = new Size(49, 15);
+            label3.TabIndex = 43;
+            label3.Text = "Edificio:";
+            // 
             // label2
             // 
             label2.AutoSize = true;
@@ -256,24 +231,6 @@
             cmbSeccion.TabIndex = 45;
             cmbSeccion.SelectedIndexChanged += Filtros;
             // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Location = new Point(178, 22);
-            label4.Name = "label4";
-            label4.Size = new Size(34, 15);
-            label4.TabIndex = 44;
-            label4.Text = "Aula:";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(43, 25);
-            label3.Name = "label3";
-            label3.Size = new Size(49, 15);
-            label3.TabIndex = 43;
-            label3.Text = "Edificio:";
-            // 
             // label6
             // 
             label6.AutoSize = true;
@@ -293,7 +250,7 @@
             // 
             // btnLogout
             // 
-            btnLogout.Location = new Point(907, 440);
+            btnLogout.Location = new Point(1023, 696);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(86, 23);
             btnLogout.TabIndex = 38;
@@ -301,11 +258,22 @@
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(919, 696);
+            button1.Name = "button1";
+            button1.Size = new Size(86, 23);
+            button1.TabIndex = 47;
+            button1.Text = "GUARDAR";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click;
+            // 
             // frmAsistencia
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(999, 475);
+            ClientSize = new Size(1132, 731);
+            Controls.Add(button1);
             Controls.Add(label2);
             Controls.Add(btnLogout);
             Controls.Add(cmbSeccion);
@@ -355,13 +323,8 @@
         private Button btnSalir;
         private Label label4;
         private Label label3;
-        private DataGridViewTextBoxColumn clmDoc;
-        private DataGridViewTextBoxColumn clmClase;
-        private DataGridViewTextBoxColumn clmSeccion;
-        private DataGridViewTextBoxColumn clmAula;
-        private DataGridViewTextBoxColumn clmEdificio;
-        private DataGridViewCheckBoxColumn clmFecha;
         private Label label2;
         private ComboBox cmbSeccion;
+        private Button button1;
     }
 }

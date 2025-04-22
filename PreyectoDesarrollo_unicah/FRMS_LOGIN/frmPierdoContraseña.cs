@@ -48,15 +48,15 @@ namespace PreyectoDesarrollo_unicah
 
         private bool GenerarCorreo(string codigo)
         {
-            MailAddress From = new MailAddress("byrd_riverat42@unicah.edu", "BYRON DANIEL RIVERA TABORA"); //De mí
-            MailAddress To = new MailAddress("byrd_riverat42@unicah.edu", "BYRON DANIEL RIVERA TABORA"); //Para mí
+            MailAddress From = new MailAddress("crig_martinezm46@unicah.edu", "BYRON DANIEL RIVERA TABORA"); //De mí
+            MailAddress To = new MailAddress("crig_martinezm46@unicah.edu", "BYRON DANIEL RIVERA TABORA"); //Para mí
             MailMessage msg = new MailMessage(From, To); //Correo de mí para mí
             msg.Subject = "Recuperación de contraseña"; //Asunto
             msg.Body = "Código de acceso: " + codigo; //Mensaje
             msg.IsBodyHtml = false;
 
             SmtpClient client = new SmtpClient("mail.smtp2go.com", 2525);
-            client.Credentials = new NetworkCredential("unicah.edu", "Password1");
+            client.Credentials = new NetworkCredential("Unicah.edu", "Unicah123");
             client.EnableSsl = true; //Habilitar encriptación de conexión
             client.Send(msg);
 

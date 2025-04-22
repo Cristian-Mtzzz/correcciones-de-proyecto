@@ -389,6 +389,44 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                             string findia = row["Column16"]?.ToString().Trim();
                             string diaspermitidos = row["Column17"]?.ToString().Trim();
 
+
+                            string semana1lunes = row["Column18"]?.ToString().Trim();
+                            string semana1martes = row["Column19"]?.ToString().Trim();
+                            string semana1miercoles = row["Column20"]?.ToString().Trim();
+                            string semana1jueves = row["Column21"]?.ToString().Trim();
+                            string semana1viernes = row["Column22"]?.ToString().Trim();
+                            string semana1sabado = row["Column23"]?.ToString().Trim();
+
+                            // Asistencia de la semana 2
+                            string semana2lunes = row["Column24"]?.ToString().Trim();
+                            string semana2martes = row["Column25"]?.ToString().Trim();
+                            string semana2miercoles = row["Column26"]?.ToString().Trim();
+                            string semana2jueves = row["Column27"]?.ToString().Trim();
+                            string semana2viernes = row["Column28"]?.ToString().Trim();
+                            string semana2sabado = row["Column29"]?.ToString().Trim();
+
+                            // Asistencia de la semana 3
+                            string semana3lunes = row["Column30"]?.ToString().Trim();
+                            string semana3martes = row["Column31"]?.ToString().Trim();
+                            string semana3miercoles = row["Column32"]?.ToString().Trim();
+                            string semana3jueves = row["Column33"]?.ToString().Trim();
+                            string semana3viernes = row["Column34"]?.ToString().Trim();
+                            string semana3sabado = row["Column35"]?.ToString().Trim();
+
+                            // Asistencia de la semana 4
+                            string semana4lunes = row["Column36"]?.ToString().Trim();
+                            string semana4martes = row["Column37"]?.ToString().Trim();
+                            string semana4miercoles = row["Column38"]?.ToString().Trim();
+                            string semana4jueves = row["Column39"]?.ToString().Trim();
+                            string semana4viernes = row["Column40"]?.ToString().Trim();
+                            string semana4sabado = row["Column41"]?.ToString().Trim();
+
+
+
+
+
+
+
                             // Insertar en Empleados
                             string checkEmpleadoQuery = "SELECT COUNT(*) FROM Empleados WHERE codigo_empleado = @CodigoEmpleado";
                             using (SqlCommand checkCmd = new SqlCommand(checkEmpleadoQuery, CONEXION_BD.conectar))
@@ -421,7 +459,6 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                                 }
                             }
 
-                            // Insertar en Clases
                             string checkClaseQuery = "SELECT COUNT(*) FROM Clases WHERE cod_Asignatura = @CodAsignatura AND seccion = @Seccion";
                             using (SqlCommand checkCmd = new SqlCommand(checkClaseQuery, CONEXION_BD.conectar))
                             {
@@ -431,11 +468,19 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
 
                                 if (count == 0)
                                 {
-                                    string insertClaseQuery = @"
-                            INSERT INTO Clases 
-                                (cod_Asignatura, Facultad, asignatura, edificio, aula, seccion, inicioDia, finDia, diasPermitidos) 
-                            VALUES 
-                                (@CodAsignatura, @Facultad, @Asignatura, @Edificio, @Aula, @Seccion, @InicioDia, @FinDia, @DiasPermitidos)";
+                                                                    string insertClaseQuery = @"
+                                INSERT INTO Clases 
+                                    (cod_Asignatura, Facultad, asignatura, edificio, aula, seccion, inicioDia, finDia, diasPermitidos, 
+                                    semana1_lunes, semana1_martes, semana1_miercoles, semana1_jueves, semana1_viernes, semana1_sabado,
+                                    semana2_lunes, semana2_martes, semana2_miercoles, semana2_jueves, semana2_viernes, semana2_sabado,
+                                    semana3_lunes, semana3_martes, semana3_miercoles, semana3_jueves, semana3_viernes, semana3_sabado,
+                                    semana4_lunes, semana4_martes, semana4_miercoles, semana4_jueves, semana4_viernes, semana4_sabado) 
+                                VALUES 
+                                    (@CodAsignatura, @Facultad, @Asignatura, @Edificio, @Aula, @Seccion, @InicioDia, @FinDia, @DiasPermitidos, 
+                                    @Semana1Lunes, @Semana1Martes, @Semana1Miercoles, @Semana1Jueves, @Semana1Viernes, @Semana1Sabado,
+                                    @Semana2Lunes, @Semana2Martes, @Semana2Miercoles, @Semana2Jueves, @Semana2Viernes, @Semana2Sabado,
+                                    @Semana3Lunes, @Semana3Martes, @Semana3Miercoles, @Semana3Jueves, @Semana3Viernes, @Semana3Sabado,
+                                    @Semana4Lunes, @Semana4Martes, @Semana4Miercoles, @Semana4Jueves, @Semana4Viernes, @Semana4Sabado)";
 
                                     using (SqlCommand cmd = new SqlCommand(insertClaseQuery, CONEXION_BD.conectar))
                                     {
@@ -449,10 +494,47 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                                         cmd.Parameters.AddWithValue("@FinDia", findia);     // Usar el valor tal cual del Excel
                                         cmd.Parameters.AddWithValue("@DiasPermitidos", diaspermitidos);
 
+                                        // Asistencia semana 1
+                                        cmd.Parameters.AddWithValue("@Semana1Lunes", semana1lunes);
+                                        cmd.Parameters.AddWithValue("@Semana1Martes", semana1martes);
+                                        cmd.Parameters.AddWithValue("@Semana1Miercoles", semana1miercoles);
+                                        cmd.Parameters.AddWithValue("@Semana1Jueves", semana1jueves);
+                                        cmd.Parameters.AddWithValue("@Semana1Viernes", semana1viernes);
+                                        cmd.Parameters.AddWithValue("@Semana1Sabado", semana1sabado);
+
+
+                                        // Asistencia semana 2
+                                        cmd.Parameters.AddWithValue("@Semana2Lunes", semana2lunes);
+                                        cmd.Parameters.AddWithValue("@Semana2Martes", semana2martes);
+                                        cmd.Parameters.AddWithValue("@Semana2Miercoles", semana2miercoles);
+                                        cmd.Parameters.AddWithValue("@Semana2Jueves", semana2jueves);
+                                        cmd.Parameters.AddWithValue("@Semana2Viernes", semana2viernes);
+                                        cmd.Parameters.AddWithValue("@Semana2Sabado", semana2sabado);
+
+
+                                        // Asistencia semana 3
+                                        cmd.Parameters.AddWithValue("@Semana3Lunes", semana3lunes);
+                                        cmd.Parameters.AddWithValue("@Semana3Martes", semana3martes);
+                                        cmd.Parameters.AddWithValue("@Semana3Miercoles", semana3miercoles);
+                                        cmd.Parameters.AddWithValue("@Semana3Jueves", semana3jueves);
+                                        cmd.Parameters.AddWithValue("@Semana3Viernes", semana3viernes);
+                                        cmd.Parameters.AddWithValue("@Semana3Sabado", semana3sabado);
+
+
+                                        // Asistencia semana 4
+                                        cmd.Parameters.AddWithValue("@Semana4Lunes", semana4lunes);
+                                        cmd.Parameters.AddWithValue("@Semana4Martes", semana4martes);
+                                        cmd.Parameters.AddWithValue("@Semana4Miercoles", semana4miercoles);
+                                        cmd.Parameters.AddWithValue("@Semana4Jueves", semana4jueves);
+                                        cmd.Parameters.AddWithValue("@Semana4Viernes", semana4viernes);
+                                        cmd.Parameters.AddWithValue("@Semana4Sabado", semana4sabado);
+
                                         cmd.ExecuteNonQuery();
                                     }
                                 }
                             }
+
+                        
                         }
                         catch (Exception ex)
                         {
@@ -460,7 +542,7 @@ namespace PreyectoDesarrollo_unicah.FRMS_ADMIN
                         }
                     }
 
-
+                    conexionBD.cerrar();
                 }
             }
 

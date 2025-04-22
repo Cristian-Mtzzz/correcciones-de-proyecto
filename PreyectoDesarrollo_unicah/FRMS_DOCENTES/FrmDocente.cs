@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices; //Relacionado con Dll (Librer�a)
@@ -18,6 +19,7 @@ namespace PreyectoDesarrollo_unicah
         {
             InitializeComponent();
             dgvDoc.AutoGenerateColumns = true;
+
         }
 
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
@@ -34,50 +36,64 @@ namespace PreyectoDesarrollo_unicah
             Login.Show();
         }
 
+        private void cargarDatosEmpleadoYClase()
+        {
+            CONEXION_BD conexionBD = new CONEXION_BD();
+            conexionBD.abrir();
+
+            try
+            {
+                // Preparar la consulta o el procedimiento almacenado
+                string query = "sp_MostrarDatosEmpleadoYClase";  // El nombre de tu procedimiento almacenado
+
+                // Usar la conexión abierta en 'conexionBD.conectar'
+                using (SqlCommand cmd = new SqlCommand(query, CONEXION_BD.conectar))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    // Configurar el adaptador de datos para llenar el DataTable
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+
+                    // Llenar el DataTable con los datos provenientes del procedimiento almacenado
+                    da.Fill(dt);
+
+                    // Verificar si se llenaron datos
+                    if (dt.Rows.Count > 0)
+                    {
+                        // Asignar los datos al DataGridView
+                        dgvDoc.DataSource = dt;  // dgvDoc es el DataGridView para mostrar los datos
+                    }
+                    else
+                    {
+                        MessageBox.Show("No se encontraron datos para mostrar.", "Sin datos", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Manejar la excepción y mostrar un mensaje de error
+                MessageBox.Show($"Error al cargar los datos: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                // Cerrar la conexión
+                conexionBD.cerrar();
+            }
+        }
+
+
+
 
         private void frmDocente_Load(object sender, EventArgs e) //Método del formulario
         {
             // Ajuste de formulario
             lblPersona.Text = ACCIONES_BD.Persona();
-
-            // Validar que ACCIONES_BD.empleado sea válido
-            if (string.IsNullOrWhiteSpace(ACCIONES_BD.empleado) || !int.TryParse(ACCIONES_BD.empleado, out _))
-            {
-                MessageBox.Show("El código del empleado no es válido. Por favor, verifique.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
-            // Ajustes de BDD
-            ACCIONES_BD.Periodo(mesDoc);
-            dgvDoc.AutoGenerateColumns = true;
-
-            // Llamar a tabla_docente y verificar si hay filas cargadas
-            ACCIONES_BD.tabla_docente(dgvDoc, ACCIONES_BD.empleado);
-            if (dgvDoc.Rows.Count == 0)
-            {
-                MessageBox.Show("No se encontraron datos para el docente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            // Validar que las celdas de la fila actual no sean nulas antes de acceder a ellas
-            if (dgvDoc.CurrentRow != null &&
-                dgvDoc.CurrentRow.Cells[0].Value != null &&
-                dgvDoc.CurrentRow.Cells[1].Value != null &&
-                dgvDoc.CurrentRow.Cells[2].Value != null &&
-                dgvDoc.CurrentRow.Cells[3].Value != null)
-            {
-                ACCIONES_BD.CargarAsistenciaDoc(
-                    mesDoc,
-                    dgvDoc.CurrentRow.Cells[0].Value.ToString(),
-                    dgvDoc.CurrentRow.Cells[1].Value.ToString(),
-                    dgvDoc.CurrentRow.Cells[2].Value.ToString(),
-                    dgvDoc.CurrentRow.Cells[3].Value.ToString());
-            }
-            else
-            {
-                MessageBox.Show("No se pudo cargar la asistencia porque faltan datos en la fila seleccionada.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            cargarDatosEmpleadoYClase();
         }
+
+
+
 
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -106,7 +122,7 @@ namespace PreyectoDesarrollo_unicah
         private void panel1_MouseDown(object sender, MouseEventArgs e)
         {
             ReleaseCapture();
-            SendMessage(this.Handle, 0x112, 0xf012, 0);  
+            SendMessage(this.Handle, 0x112, 0xf012, 0);
         }
 
         private void lblPersona_Click(object sender, EventArgs e)
@@ -117,57 +133,17 @@ namespace PreyectoDesarrollo_unicah
 
         private void dgvDoc_SelectionChanged(object sender, EventArgs e)
         {
-            if (dgvDoc.CurrentRow != null)
-            {
-                // Extraer los valores de la fila seleccionada.
-                string Clase = dgvDoc.CurrentRow.Cells[0].Value.ToString();
-                string seccion = dgvDoc.CurrentRow.Cells[1].Value.ToString();
-                string aula = dgvDoc.CurrentRow.Cells[2].Value.ToString();
-                string edificio = dgvDoc.CurrentRow.Cells[3].Value.ToString();
 
-                // Limpiar las fechas resaltadas previas en el MonthCalendar.
-                mesDoc.RemoveAllBoldedDates();
-
-                // Llama al m�todo para cargar las fechas marcadas para ese registro.
-                ACCIONES_BD.CargarAsistenciaDoc(mesDoc, Clase, seccion, aula, edificio);
-            }
         }
 
         private void mesDoc_DateSelected(object sender, DateRangeEventArgs e)
         {
-            DateTime fechaSeleccionada = e.Start.Date;
-            // Definir la fecha de inicio del primer parcial
-            DateTime fechaInicio = new DateTime(DateTime.Now.Year, 1, 20); // 20 de enero
 
-            // Calcular la diferencia en d�as
-            int offsetDias = (fechaSeleccionada - fechaInicio).Days; // Puede ser negativo si est� antes del 20/ene
+        }
 
-            // Cada semana son 7 d�as
-            // Tenemos 12 semanas en total (3 parciales * 4 semanas)
-            // Rango total: 0 <= offsetDias < 12 * 7 = 84
+        private void sqlDataReaderBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
 
-            if (offsetDias < 0 || offsetDias >= 12 * 7)
-            {
-                // Fuera de rango (antes del 20/ene o despu�s de 12 semanas)
-                lblParcial.Text = "Fuera de rango";
-                lblWeek.Text = "";
-                return;
-            }
-
-            // Calcular el �ndice de la semana (0 a 11)
-            int indiceSemana = offsetDias / 7; // entero
-
-            // Calcular el �ndice de parcial (0 a 2)
-            // 4 semanas por parcial => parcial = floor(indiceSemana / 4)
-            int indiceParcial = indiceSemana / 4; // 0 = parcial 1, 1 = parcial 2, 2 = parcial 3
-
-            // Convertir a 1-based
-            int parcial = indiceParcial + 1;     // 1..3
-            int semanaEnParcial = (indiceSemana % 4) + 1; // 1..4
-
-            // Mostrar en labels
-            lblParcial.Text = $"Parcial {parcial}";
-            lblWeek.Text = $"Semana {semanaEnParcial}";
         }
     }
 }

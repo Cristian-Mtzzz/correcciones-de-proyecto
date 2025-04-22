@@ -36,6 +36,7 @@
             btncargar = new Button();
             dgvMigrar = new DataGridView();
             btnGuardar = new Button();
+            button1 = new Button();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -129,11 +130,21 @@
             btnGuardar.UseVisualStyleBackColor = true;
             btnGuardar.Click += btnGuardar_Click;
             // 
+            // button1
+            // 
+            button1.Location = new Point(1001, 751);
+            button1.Name = "button1";
+            button1.Size = new Size(99, 35);
+            button1.TabIndex = 10;
+            button1.Text = "Guardar datos";
+            button1.UseVisualStyleBackColor = true;
+            // 
             // FrmMigrar
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1359, 798);
+            Controls.Add(button1);
             Controls.Add(btnGuardar);
             Controls.Add(dgvMigrar);
             Controls.Add(btncargar);
@@ -173,5 +184,6 @@
         private DataGridViewTextBoxColumn Edificio;
         private DataGridViewTextBoxColumn Fecha_inicio;
         private DataGridViewTextBoxColumn Fecha_final;
+        private Button button1;
     }
 }
