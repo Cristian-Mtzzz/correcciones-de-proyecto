@@ -496,94 +496,125 @@ namespace PreyectoDesarrollo_unicah.CLASES
                 }
             }
         }
-        public static DataTable tablaJustifica(DataGridView dgv, string decanoCodigo)
+        public static DataTable ObtenerDatosJustificaciones(string codigoDecano)
         {
-            if (string.IsNullOrWhiteSpace(decanoCodigo))
-            {
-                throw new ArgumentException("El parámetro decanoCodigo no puede ser nulo o vacío.");
-            }
-
-            // Validar que decanoCodigo sea un valor numérico válido
-            if (!int.TryParse(decanoCodigo, out int codigoDecano))
-            {
-                //throw new ArgumentException("El parámetro decanoCodigo debe ser un número válido.");
-            }
-
             DataTable dt = new DataTable();
-            using (SqlConnection conn = new SqlConnection(CONEXION_BD.conectar.ConnectionString))
-            {
-                conn.Open();
-                SqlCommand cmd = new SqlCommand("PA_Justifica", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@CodigoDecano", codigoDecano); // Aquí se pasa el valor convertido
 
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                da.Fill(dt);
-            }
-
-            if (dt.Rows.Count > 0)
-            {
-                dgv.Columns.Clear();
-                BindingSource bs = new BindingSource();
-                bs.DataSource = dt;
-                dgv.DataSource = bs;
-                bs.ResetBindings(false);
-                dgv.AutoGenerateColumns = true;
-                dgv.Refresh();
-                dgv.Columns[0].Visible = false;
-                dgv.Columns[1].Width = 150;
-                dgv.Columns[2].Width = 80;
-                dgv.Columns[3].Width = 66;
-                dgv.Columns[4].Width = 120;
-                dgv.Columns[4].HeaderText = "Sección";
-                dgv.Columns[5].Width = 304;
-                dgv.Columns[5].HeaderText = "Justificación";
-            }
+            // Columnas básicas que coinciden con tu estructura
+            dt.Columns.Add("codigo_empleado", typeof(int));
+            dt.Columns.Add("cod_Asignatura", typeof(string));
+            dt.Columns.Add("asignatura", typeof(string));
+            dt.Columns.Add("docente", typeof(string));
 
             return dt;
         }
 
-
-
-
-        public static void Justifico(DataGridView dgv, int Ausencia, string Justificacion)
+        public static bool Justifico(DataGridView dgv, int filaSeleccionada, string justificacion)
         {
-            using (SqlConnection conn = new SqlConnection(CONEXION_BD.conectar.ConnectionString))
+            // Validación básica
+            if (dgv == null || filaSeleccionada < 0 || filaSeleccionada >= dgv.Rows.Count ||
+                string.IsNullOrWhiteSpace(justificacion))
             {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand("PA_Insertar_Justificacion", conn))
+                MessageBox.Show("Datos de entrada inválidos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            try
+            {
+                // Obtener ID_Asistencia desde el DataGridView
+                var row = dgv.Rows[filaSeleccionada];
+                string idAsistencia = row.Cells["ID_Asistencia"]?.Value?.ToString();
+
+                if (string.IsNullOrEmpty(idAsistencia))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@ID_Asistencia", Ausencia);
-                    cmd.Parameters.AddWithValue("@Justificacion", Justificacion);
-                    cmd.ExecuteNonQuery(); SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    dgv.DataSource = dt;
+                    MessageBox.Show("No se pudo obtener el ID de la asistencia", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
                 }
+
+                using (SqlConnection con = new SqlConnection(CONEXION_BD.conectar.ConnectionString))
+                {
+                    con.Open();
+                    string query = @"UPDATE Asistencia 
+                            SET Observacion = @justificacion
+                            WHERE ID_Asistencia = @idAsistencia";
+
+                    using (SqlCommand cmd = new SqlCommand(query, con))
+                    {
+                        cmd.Parameters.AddWithValue("@idAsistencia", Convert.ToInt32(idAsistencia));
+                        cmd.Parameters.AddWithValue("@justificacion", justificacion);
+
+                        int affectedRows = cmd.ExecuteNonQuery();
+                        return affectedRows > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al actualizar la justificación: {ex.Message}",
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
         }
 
         public static void FiltrarDatosJusto(string Docente, string Edificio, DataGridView dgv)
         {
-            using (SqlConnection conn = new SqlConnection(CONEXION_BD.conectar.ConnectionString))
+            try
             {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand("PA_Buscar_Justo", conn))
+                using (SqlConnection conn = new SqlConnection(CONEXION_BD.conectar.ConnectionString))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Docente", Docente);
-                    cmd.Parameters.AddWithValue("@Edificio", Edificio);
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("PA_Buscar_Justo", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
 
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
+                        // Parámetros exactamente como los espera el procedimiento
+                        cmd.Parameters.AddWithValue("@Docente", string.IsNullOrEmpty(Docente) ? "" : Docente);
+                        cmd.Parameters.AddWithValue("@Edificio", string.IsNullOrEmpty(Edificio) ? "" : Edificio.ToString().Trim());
 
-                    dgv.DataSource = dt;
+                        using (SqlDataAdapter da = new SqlDataAdapter(cmd))
+                        {
+                            DataTable dt = new DataTable();
+                            da.Fill(dt);
+
+                            // Asignar los datos al DataGridView
+                            dgv.DataSource = dt;
+
+                            // Configuración opcional de columnas
+                            ConfigurarColumnasDataGridView(dgv);
+                        }
+                    }
                 }
-                dgv.Columns[0].Visible = false;
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show($"Error al ejecutar la búsqueda:\n{ex.Message}",
+                              "Error de Base de Datos", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error inesperado: {ex.Message}",
+                              "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private static void ConfigurarColumnasDataGridView(DataGridView dgv)
+        {
+            // Ocultar columna ID si existe
+            if (dgv.Columns.Contains("ID_Asistencia"))
+                dgv.Columns["ID_Asistencia"].Visible = false;
+
+            // Renombrar columnas para mejor visualización
+            if (dgv.Columns.Contains("asignatura"))
+                dgv.Columns["asignatura"].HeaderText = "Asignatura";
+
+            if (dgv.Columns.Contains("Fecha de Ausencia"))
+                dgv.Columns["Fecha de Ausencia"].HeaderText = "Fecha Ausencia";
+
+            if (dgv.Columns.Contains("Observacion"))
+                dgv.Columns["Observacion"].HeaderText = "Justificación";
+        }
+
+
         public static DataTable tablaRepone(DataGridView dgv, string decanoCodigo)
         {
             // Validar que el parámetro decanoCodigo no sea nulo o vacío

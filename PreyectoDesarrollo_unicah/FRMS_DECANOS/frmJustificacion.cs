@@ -33,9 +33,6 @@ namespace PreyectoDesarrollo_unicah
             //Ajuste de controles
             txtJustifica.Text = Environment.NewLine; // (TextChanged) Mantener la primera l�nea vac�a cuando se opera esto
             txtJustifica.SelectionStart = txtJustifica.Text.Length; // (TextChanged) Colocar el cursor en la segunda l�nea cuando se opera esto
-
-            //Ajuste en la BDD
-            ACCIONES_BD.tablaJustifica(dgvJustificacion, ACCIONES_BD.empleado);
         }
 
         private void btnVoy_Click(object sender, EventArgs e)
@@ -64,7 +61,6 @@ namespace PreyectoDesarrollo_unicah
             if (!string.IsNullOrEmpty(txtJustifica.Text.Trim()))
             {
                 ACCIONES_BD.Justifico(dgvJustificacion, (int)dgvJustificacion.CurrentRow.Cells[0].Value, txtJustifica.Text);
-                ACCIONES_BD.tablaJustifica(dgvJustificacion, ACCIONES_BD.empleado); //Esto ayuda a actualizar la tabla, la l�nea anterior actualiza datos
             }
         }
 
@@ -138,6 +134,11 @@ namespace PreyectoDesarrollo_unicah
         private void cmbEdificio_SelectedIndexChanged(object sender, EventArgs e)
         {
             ACCIONES_BD.FiltrarDatosJusto(txtBusco.Text, cmbEdificio.Text, dgvJustificacion);
+        }
+
+        private void dgvJustificacion_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
