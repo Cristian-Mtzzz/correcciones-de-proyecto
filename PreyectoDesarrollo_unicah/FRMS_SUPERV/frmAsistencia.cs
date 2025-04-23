@@ -73,8 +73,9 @@ namespace PreyectoDesarrollo_unicah
                     dgvAsiste.DataSource = dt;
 
                     // Detectar columnas de asistencia por nombre y poner checkbox
-                    foreach (DataGridViewColumn col in dgvAsiste.Columns)
+                    for (int i = dgvAsiste.Columns.Count - 1; i >= 0; i--)
                     {
+                        DataGridViewColumn col = dgvAsiste.Columns[i];
                         if (col.Name.StartsWith("Semana") && col.ValueType == typeof(bool))
                         {
                             DataGridViewCheckBoxColumn chk = new DataGridViewCheckBoxColumn
@@ -87,7 +88,7 @@ namespace PreyectoDesarrollo_unicah
                                 IndeterminateValue = false
                             };
                             int index = col.Index;
-                            dgvAsiste.Columns.Remove(col);
+                            dgvAsiste.Columns.RemoveAt(i); // Elimina por índice
                             dgvAsiste.Columns.Insert(index, chk);
                         }
                     }
